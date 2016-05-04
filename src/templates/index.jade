@@ -1,0 +1,54 @@
+doctype
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black')
+    title Утро 2016
+    link(rel='stylesheet', href='./js/vendor/framework7/css/framework7.ios.min.css')
+  body
+    .statusbar-overlay
+
+    .panel-overlay
+    .panel.panel-left.panel-reveal
+
+    .views
+      .view.view-main
+        .navbar
+          .navbar-inner
+            .center Утро 2016
+        .pages.navbar-through
+          .page(data-page='main')
+            .page-content
+              .list-block
+                ul
+                  li.item-content
+                    a.item-inner.page-link(href='#places')
+                      .item-title
+                        | Урал
+                        =' '
+                        b Патриотичный
+                  li.item-content
+                    a.item-inner.page-link(href='#places/48')
+                      .item-title
+                        | Урал
+                        =' '
+                        b Трудовой
+                  li.item-content
+                    a.item-inner.page-link(href='#places/link')
+                      .item-title
+                        | Урал
+                        =' '
+                        b Здоровый
+                  li.item-content
+                    .item-inner
+                      .item-title
+                        | Урал
+                        =' '
+                        b Политический
+
+
+
+    script(src='./js/vendor/vendor.js')
+    script(src='./js/app/app.js')

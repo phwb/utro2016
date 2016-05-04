@@ -1,0 +1,33 @@
+{
+  "bitwise": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "freeze": true,
+
+  "node": true,
+
+  "devel": true,
+
+  "esnext": true,
+  "immed": true,
+  "indent": 2,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "quotmark": "single",
+  "undef": true,
+  "unused": true,
+  "strict": true,
+  "trailing": true,
+  "smarttabs": true,
+  "white": true,
+  "globals": {
+    "document": true,
+    "Framework7": true,
+    "Dom7": true,
+    "Backbone": true,
+    "_": true
+  }
+}
