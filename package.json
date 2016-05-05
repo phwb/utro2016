@@ -1,15 +1,18 @@
 {
-  "name": "utro2016.app",
+  "name": "utro2016",
   "version": "0.0.1",
   "description": "Моблильное приложение форума Утро 2016",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "gulp": "./node_modules/.bin/gulp"
   },
   "keywords": [
     "утро2016"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/phwb/utro2016.git"
+  },
   "author": "phweb",
   "license": "MIT",
   "devDependencies": {
@@ -34,6 +37,7 @@
     "backbone": "^1.3.3",
     "framework7": "^1.4.2",
     "jquery": "^2.2.3",
+    "localforage-backbone": "^0.6.2",
     "underscore": "^1.8.3"
   }
 }

@@ -6,14 +6,16 @@ function load(name) {
     try {
       handler = require('bundle!../pages/' + name + '/index.js');
     } catch (e) {
-      // TODO: catch error here!!!
+      reject(e);
+    }
+
+    if (!handler) {
       reject();
     }
-    if (handler) {
-      handler(function (route) {
-        resolve(route);
-      });
-    }
+
+    handler(function (route) {
+      resolve(route);
+    });
   });
 }
 

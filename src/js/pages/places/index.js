@@ -1,10 +1,17 @@
 'use strict';
 
-import Page from '../../app/page';
+function result(view, Page, {id} = {}) {
+  let pageOptions = {
+    name: 'places',
+    title: 'Площадки'
+  };
 
-let page = new Page({
-  name: 'places',
-  title: 'Площадки'
-});
+  if (id) {
+    pageOptions.title += ' ' + id;
+  }
 
-module.exports = page;
+  let page = new Page(pageOptions);
+  view.loadContent(page.render());
+}
+
+module.exports = result;
