@@ -77,6 +77,8 @@ export function webpack(cb) {
 
     watch: true,
 
+    devtool: 'source-map',
+
     module: {
       loaders: [
         {
@@ -99,7 +101,7 @@ export function webpack(cb) {
     ]
   };
 
-  return gulp.src(['./src/js/app.js'])
+  return gulp.src(['./src/js/init.js'])
     .pipe(plumber(plumberOptions))
     .pipe(named())
     .pipe(webpackStream(options, null, done))
