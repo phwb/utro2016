@@ -1,11 +1,19 @@
 'use strict';
 
-import template from './page.jade';
+import Main   from '../../views/main/main';
+import Modal  from '../../views/main/modal';
+import Menu   from '../../views/main/menu';
 
-/** @type {function|jQuery} */
+/** @type {jQuery|function} */
 let $ = Backbone.$;
 
+let main = new Main();
+let modal = new Modal();
+let menu = new Menu();
+// по факту пустые функции, прото чтоб не подсвечивалась в IDE
+modal.render();
+menu.render();
+
 module.exports = function (el) {
-  let $page = $(el);
-  $page.html(template);
+  $(el).html(main.render().$el);
 };

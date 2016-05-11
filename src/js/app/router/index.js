@@ -47,14 +47,8 @@ class History {
 
 let history = new History();
 
-function Router() {
-  Backbone.Router.call(this, arguments);
-}
-
-Router.extend = Backbone.Router.extend;
-
-Router.prototype = _.extend({}, Backbone.Router.prototype, {
-  route: function (route, name, callback) {
+class Router extends Backbone.Router {
+  route (route, name, callback) {
     if (!_.isRegExp(route)) {
       route = this._routeToRegExp(route);
     }
@@ -75,6 +69,6 @@ Router.prototype = _.extend({}, Backbone.Router.prototype, {
     });
     return this;
   }
-});
+}
 
 export default Router;

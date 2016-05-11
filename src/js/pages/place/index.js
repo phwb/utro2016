@@ -1,32 +1,23 @@
 'use strict';
 
-import _navbar from './navbar.jade';
-import _page from './page.jade';
+import placePage from '../../views/place/place';
 
 function result(view, Page, {id} = {}) {
   if (!id) {
     return false;
   }
-  let pageOptions = {
-    name: 'place',
-    title: 'Площадки'
-  };
-
-  if (id) {
-    pageOptions.title += ' ' + id;
+  
+  let place = placePage(id);
+  if (!place) {
+    return false;
   }
 
-  let page = new Page(pageOptions);
+  let page = new Page({name: place.page.cid});
 
-  page.navbar = _navbar;
-  page.page = _page;
-
-  page.$page.find('#place-timetable').on('show', function () {
-    console.log('show timetable');
-  });
+  page.navbar = place.navbar.render().$el;
+  page.page = place.page.render().$el;
 
   view.loadContent(page.render());
-  return true;
 }
 
 module.exports = result;

@@ -1,7 +1,8 @@
-import model from '../models/news';
+import NewsItem from '../models/news-item';
 
 let News = Backbone.Collection.extend({
-  model: model
+  model: NewsItem,
+  sync: Backbone.localforage.sync('news-list')
 });
 
 export default new News();

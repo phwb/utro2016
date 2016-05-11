@@ -27,7 +27,9 @@ export function assets() {
     './node_modules/framework7/dist/js/framework7.js',
     './node_modules/jquery/dist/jquery.js',
     './node_modules/underscore/underscore.js',
-    './node_modules/backbone/backbone.js'
+    './node_modules/backbone/backbone.js',
+    './node_modules/localforage/dist/localforage.js',
+    './node_modules/localforage-backbone/dist/localforage.backbone.js'
   ];
 
   return gulp.src(vendor)

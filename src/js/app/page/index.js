@@ -24,6 +24,7 @@ class Page {
 
     this.$navbar = $(template.navbar);
     this.$page = $(template.page);
+    this.$content = this.$page.find('.page-content');
   }
 
   // геттер/сеттер для навбара
@@ -33,7 +34,7 @@ class Page {
 
   set navbar(navbar) {
     template.navbar = navbar;
-    this.$navbar = $(template.navbar);
+    this.$navbar = navbar instanceof $ ? navbar : $(template.navbar);
   }
 
   // геттер/сеттер для зоны контента
@@ -43,7 +44,16 @@ class Page {
 
   set page(page) {
     template.page = page;
-    this.$page = $(template.page);
+    this.$page = page instanceof $ ? page : $(template.page);
+    this.$content = this.$page.find('.page-content');
+  }
+
+  get content() {
+    return this.$content.html();
+  }
+
+  set content(content) {
+    this.$content.html(content);
   }
 
   render() {
