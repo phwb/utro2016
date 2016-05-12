@@ -6,6 +6,7 @@ import shifts from '../../collections/shifts';
 import days from '../../collections/days';
 import schedule from '../../collections/schedule';
 import places from '../../collections/places';
+import contacts from '../../collections/contacts';
 
 function loader(name) {
   return new Promise(function (resolve, reject) {
@@ -31,7 +32,8 @@ function initSync() {
   sync
     .then(() => new Sync(days))
     .then(() => new Sync(schedule))
-    .then(() => new Sync(places));
+    .then(() => new Sync(places))
+    .then(() => new Sync(contacts));
 }
 
 export {loader, initSync};

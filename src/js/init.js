@@ -39,7 +39,7 @@ let view = app.addView('.view-main', {
 });
 
 // роутер всего приложения (слегка видоизменен стандартный роутер Backbone'на)
-// срабатывает на ссылках (любых тегах) с классом .page-link
+// срабатывает на ссылках (любых тегах) с классом .page-link и атрибутом href или data-href
 let AppRouter = Router.extend({
   routes: {
     'main':                     'main',

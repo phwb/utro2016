@@ -1,11 +1,16 @@
 'use strict';
 
 // шаблоны
-import _item        from './templates/contact-item.jade';
+import _item    from './templates/schedule-item.jade';
 // коллекции
-import allContacts  from '../../collections/contacts';
+import shifts   from '../../collections/shifts';
+import allDays  from '../../collections/days';
 
 let $ = Backbone.$;
+// выбранная смена
+let shift = shifts.findWhere({selected: true});
+// выбираем дни, которые принадлежат текущй смене
+let days = allDays.where({shiftID: shift.get('id')});
 
 // элемент списка
 class Item extends Backbone.View {
@@ -24,19 +29,17 @@ class Item extends Backbone.View {
   }
 }
 
-// вкладка Контакты
-class Contacts extends Backbone.View {
+// вкладка Расписание
+class Schedule extends Backbone.View {
   get className() {
     return 'list-block media-list';
   }
 
   initialize({placeID = 0} = {}) {
     this.$list = $('<ul />').appendTo(this.$el);
-    let contacts = allContacts.where({placeID: placeID});
+    this.placeID = placeID;
 
-    if (contacts && contacts.length > 0) {
-      contacts.forEach(this.addItem, this);
-    }
+    days.forEach(this.addItem, this);
   }
 
   addItem(model) {
@@ -45,4 +48,4 @@ class Contacts extends Backbone.View {
   }
 }
 
-export default Contacts;
+export default Schedule;
