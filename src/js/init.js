@@ -42,12 +42,18 @@ let view = app.addView('.view-main', {
 // срабатывает на ссылках (любых тегах) с классом .page-link
 let AppRouter = Router.extend({
   routes: {
-    'main':       'main',
-    ':route/:id': 'default',
-    ':route':     'default'
+    'main':                     'main',
+    'schedule/:dayID/:placeID': 'schedule',
+    ':route/:id':               'default',
+    ':route':                   'default'
   }
 });
 let router = new AppRouter();
+
+// расписание
+router.on('route:schedule', function (dayID, placeID) {
+  console.log('dayID = ' + dayID, ', placeID = ' + placeID);
+});
 
 // роут по умолчанию
 router.on('route:default', function (name, id = 0) {

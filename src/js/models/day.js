@@ -3,7 +3,6 @@ let Day = Backbone.Model.extend({
     id: 0,
     name: '',
     date: '',
-
     shiftID: 0
   },
   syncMap: {
