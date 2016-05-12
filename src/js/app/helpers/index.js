@@ -1,5 +1,6 @@
 'use strict';
 
+import dateFormat from 'date-format';
 import Sync from '../../app/sync/index';
 // коллекции
 import shifts from '../../collections/shifts';
@@ -36,4 +37,15 @@ function initSync() {
     .then(() => new Sync(contacts));
 }
 
-export {loader, initSync};
+function formatDate(date) {
+  let month = 'января февраля марта апреля мая июня июля августа сентября октября ноября декабря'.split(' ');
+  let result = dateFormat.apply(dateFormat, arguments);
+
+  if (typeof(date) === 'string') {
+    date = arguments[1];
+  }
+
+  return result.replace(/Mm/g, month[date.getMonth()]);
+}
+
+export {loader, initSync, formatDate};

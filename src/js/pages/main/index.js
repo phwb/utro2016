@@ -10,7 +10,7 @@ let $ = Backbone.$;
 let main = new Main();
 let modal = new Modal();
 let menu = new Menu();
-// по факту пустые функции, прото чтоб не подсвечивалась в IDE
+// по факту пустые функции, просто чтоб не подсвечивалась в IDE
 modal.render();
 menu.render();
 

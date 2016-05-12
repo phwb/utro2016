@@ -1,6 +1,11 @@
-.page.with-subnavbar(data-page='place')
+.page.with-subnavbar(data-page!='place-<%= id %>')
   .tabs
     .page-content.tab.active(id!='place-desc-<%= id %>')
-      .content-block <% if (type === 'text') { %><%- text %><% } else { %><%= text %><% } %>
+      .content-block
+        | <% if (type === 'text') { %>
+        |   <%- text %>
+        | <% } else { %>
+        |   <%= text %>
+        | <% } %>
     .page-content.tab(id!='place-schedule-<%= id %>')
     .page-content.tab(id!='place-contacts-<%= id %>')

@@ -31,7 +31,7 @@ class List extends Backbone.View {
     // событие происходят в функции initSync()
     //
     // «reset» происходит когда вызывается функция fetch у коллекции,
-    // но reset так же вызывается когда коллекция пуста, то есть при первом запуске приложения
+    // но «reset» так же вызывается когда коллекция пуста, то есть при первом запуске приложения
     // для этого как раз и есть событие «sync:ajax.end»
     this.listenTo(places, 'reset', this.addAll);
     this.listenTo(places, 'sync:ajax.end', this.loadSuccess);
@@ -73,10 +73,15 @@ class List extends Backbone.View {
     this.$el.append( item.render().$el );
   }
 }
+let list = new List();
 
 class Main extends Backbone.View {
-  get el() {
-    return _main;
+  get className() {
+    return 'page-content';
+  }
+
+  get template() {
+    return _.template(_main);
   }
 
   initialize() {
@@ -84,8 +89,7 @@ class Main extends Backbone.View {
   }
 
   render() {
-    let list = new List();
-    this.$list.html( list.render().$el );
+    this.$el.html( this.template() ).find('.list-block').html( list.render().$el );
     return this;
   }
 }
