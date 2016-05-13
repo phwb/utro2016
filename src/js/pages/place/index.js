@@ -2,7 +2,8 @@
 
 import placePage from '../../views/place/place';
 
-function result(view, Page, {id} = {}) {
+function result(view, Page, {arg0} = {}) {
+  let id = arg0;
   if (!id) {
     return false;
   }

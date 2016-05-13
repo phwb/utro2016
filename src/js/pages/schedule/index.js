@@ -2,7 +2,10 @@
 
 import schedulePage from '../../views/schedule/schedule';
 
-function result(view, Page, {dayID, placeID} = {}) {
+function result(view, Page, {arg0, arg1} = {}) {
+  let dayID = arg0;
+  let placeID = arg1;
+  
   if (!dayID || !placeID) {
     return false;
   }

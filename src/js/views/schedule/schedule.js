@@ -8,8 +8,6 @@ import _item    from './templates/schedule-item.jade';
 import days     from '../../collections/days';
 import schedule from '../../collections/schedule';
 
-let $ = Backbone.$;
-
 // навбар
 class Navbar extends Backbone.View {
   get className() {

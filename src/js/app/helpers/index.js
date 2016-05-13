@@ -37,13 +37,13 @@ function initSync() {
     .then(() => new Sync(contacts));
 }
 
-function formatDate(date) {
-  let month = 'января февраля марта апреля мая июня июля августа сентября октября ноября декабря'.split(' ');
-  let result = dateFormat.apply(dateFormat, arguments);
-
-  if (typeof(date) === 'string') {
-    date = arguments[1];
+function formatDate(date, format = dateFormat.DATETIME_FORMAT) {
+  if (!(date instanceof Date)) {
+    date = new Date(date);
   }
+
+  let month = 'января февраля марта апреля мая июня июля августа сентября октября ноября декабря'.split(' ');
+  let result = dateFormat(format, date);
 
   return result.replace(/Mm/g, month[date.getMonth()]);
 }

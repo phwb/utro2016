@@ -12,19 +12,7 @@ lf.config({
   name: 'utro2016'
 });
 
-// временная функция форматирования даты
-// можно подключить moment.js или оставить так как есть
-/*let leadingZero = i => i < 10 ? '0' + i : i;
-let month = 'января февраля марта апреля мая июня июля августа сентября октября ноября декабря'.split(' ');
-_.template.formatDate = stamp => {
-  let date = new Date(stamp);
-  let fragments = [
-    date.getDate(),
-    month[date.getMonth()],
-    date.getFullYear()
-  ];
-  return fragments.join(' ') + ', ' + leadingZero(date.getHours()) + ':' + leadingZero(date.getMinutes());
-};*/
+// функция форматирования даты
 _.template.formatDate = formatDate;
 
 // установка начальных параметров Framework7
@@ -43,8 +31,12 @@ let view = app.addView('.view-main', {
 // срабатывает на ссылках (любых тегах) с классом .page-link и атрибутом href или data-href
 let AppRouter = Router.extend({
   routes: {
+    // главная страница
     'main':                     'main',
+
+    // расписание
     'schedule/:dayID/:placeID': 'schedule',
+    'schedule/detail/:id':      'scheduleDetail',
 
     // дефолтный роут подходит под большинство страниц
     // все что находится выше, уже конкретные страницы
@@ -54,42 +46,14 @@ let AppRouter = Router.extend({
 });
 let router = new AppRouter();
 
-// расписание
-router.on('route:schedule', function (dayID, placeID) {
-  loader('schedule')
-  // отрисовываем и вставляем в DOM
-    .then(function (factory) {
-      let params = {
-        dayID: dayID,
-        placeID: placeID
-      };
-
-      let result = factory(view, Page, params);
-      if (result === false) {
-        // тут пока используется алерт из Framework7
-        // TODO: в продакшен нужно переделать на нативный
-        app.alert('Произошла не предвиденная ошибка, поторите действие еще раз!', 'Ошибка');
-      }
-    })
-    // если что то пошло не так покажем 404-ую
-    .catch(function () {
-      let page404 = new Page({
-        name: 'page-404',
-        title: 'Страница не найдена'
-      });
-      view.loadContent(page404.render());
-    });
-});
-
-// роут по умолчанию
-router.on('route:default', function (name, id = 0) {
-  // загружаем страницу
+function loaderProxy(name, ...rest) {
   loader(name)
     // отрисовываем и вставляем в DOM
     .then(function (factory) {
-      let params = {
-        id: id
-      };
+      let params = {};
+      for (let i = 0, len = rest.length; i < len; i += 1) {
+        params['arg' + i] = rest[i];
+      }
 
       let result = factory(view, Page, params);
       if (result === false) {
@@ -106,8 +70,13 @@ router.on('route:default', function (name, id = 0) {
       });
       view.loadContent(page404.render());
     });
-});
+}
 
+// расписание
+router.on('route:scheduleDetail', id => loaderProxy('schedule-detail', id));
+router.on('route:schedule', (dayID, placeID) => loaderProxy('schedule', dayID, placeID));
+// роут по умолчанию
+router.on('route:default', (name, id = 0) => loaderProxy(name, id));
 // роут индексной страницы
 router.on('route:main', e => loader('main').then(factory => factory(e.container)));
 

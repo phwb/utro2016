@@ -58,8 +58,8 @@ class Page {
 
   render() {
     return [
-      this.$navbar[0],
-      this.$page[0]
+      this.$navbar.html(),
+      this.$page.html()
     ];
   }
 }
