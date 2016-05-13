@@ -13,6 +13,8 @@ html
     .panel-overlay
     .panel.panel-left.panel-reveal
       .content-block
+        p Left Panel content here
+
 
     .views
       .view.view-main
@@ -23,10 +25,12 @@ html
               a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
         .pages.navbar-through
           .page(data-page='main')
+            .page-content
+              .list-block
 
-    .login-screen.modal-in
+    //.login-screen.modal-in
       .view
-        .page
+        .page(data-page='splash')
           .page-content
 
     script(src='./js/vendor/vendor.js')

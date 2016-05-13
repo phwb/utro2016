@@ -1,6 +1,6 @@
 'use strict';
 
-let $ = Backbone.$;
+let ajax = Backbone.ajax;
 let defaults = {
   domain: 'http://api.utro2016.loc'
 };
@@ -52,7 +52,10 @@ class Sync {
           }
 
           collection.trigger('sync:ajax.start');
-          $.getJSON(defaults.domain + url)
+          ajax({
+            url: defaults.domain + url,
+            dataType: 'json'
+          })
             .then(data => {
               let items = data.ITEMS || [];
               // let lastDateUpdate = data.LAST_DATE_UPDATE || false;

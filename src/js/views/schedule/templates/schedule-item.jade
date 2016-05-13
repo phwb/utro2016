@@ -1,8 +1,0 @@
-a.item-link.item-content.page-link(href!='#schedule/detail/<%= id %>')
-  .item-inner
-    .item-title-row
-      .item-title: b <%= name %>
-    .item-text
-      | <%= _.template.formatDate(timestamp * 1000, 'dd Mm') %>,
-      =' '
-      b(style='color: blue') <%= start %>
