@@ -53,7 +53,7 @@ export function initRouter() {
  * @param {function} callback
  * @returns {Promise}
  */
-export function initSync(callback = function () {}) {
+export function initSync(callback = () => {}) {
   let sync = Promise.resolve();
   config.fetch({reset: true});
   sync
