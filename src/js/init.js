@@ -15,6 +15,7 @@ initRouter();
 // при чем инициализация в самом низу скрипта
 let app = new Framework7({
   swipePanel: 'left',
+  animateNavBackIcon: true,
   init: false
 });
 
@@ -25,6 +26,14 @@ app.addView('.view-main', {
 
 // начало синхронизации
 initSync(function () {
+  let $ = Backbone.$;
+  
+  // закрываем модальное окно при выборе смены
+  // событие генерится вьюшке views/main/modal
+  $('.login-screen').on('close:modal', function () {
+    app.closeModal();
+  });
+
   // где то по пути инициализируем само приложение
   app.init();
 });

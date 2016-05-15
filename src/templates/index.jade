@@ -15,7 +15,6 @@ html
       .content-block
         p Left Panel content here
 
-
     .views
       .view.view-main
         .navbar
@@ -28,10 +27,12 @@ html
             .page-content
               .list-block
 
-    //.login-screen.modal-in
+    .login-screen.modal-in
       .view
         .page(data-page='splash')
-          .page-content
+          .page-content.login-screen-content
+            .login-screen-title Выберите смену
+            .list-block Загрузка смен...
 
     script(src='./js/vendor/vendor.js')
     script(src='./js/app/init.js')

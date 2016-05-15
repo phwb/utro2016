@@ -6,4 +6,6 @@ let Places = Backbone.Collection.extend({
   sync: Backbone.localforage.sync('places')
 });
 
+export {Places};
+
 export default new Places();

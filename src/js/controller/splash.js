@@ -1,5 +1,9 @@
 'use strict';
 
-module.exports = function () {
-  console.log('splash screen');
+import Modal from '../views/main/modal';
+
+module.exports = function (container) {
+  return new Modal({
+    el: container
+  });
 };

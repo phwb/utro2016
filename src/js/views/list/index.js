@@ -18,6 +18,7 @@ class Item extends Backbone.View {
   }
 }
 
+// обычный список
 class Simple extends Backbone.View {
   get tagName() {
     return 'ul';
@@ -42,6 +43,7 @@ function href(model) {
   return model.get('id');
 }
 
+// список со ссылками
 class SimpleLink extends Simple {
   initialize(params) {
     this.href = params.href || href;

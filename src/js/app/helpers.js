@@ -9,8 +9,7 @@ import days     from '../collections/days';
 import schedule from '../collections/schedule';
 import places   from '../collections/places';
 
-let $ = Framework7.$;
-
+// + router
 /**
  * Роутер приложения
  *
@@ -41,9 +40,27 @@ function load(name) {
  * Инициализация роутера
  */
 export function initRouter() {
+  let $ = Framework7.$;
+
   $(document).on('pageBeforeInit', e => {
     let page = e.detail.page;
     load(page.name).then(route => route(page.container, page.query || {}));
+  });
+}
+// - router
+
+// + sync
+/**
+ * Первым всегда загружается конфиг
+ *
+ * @returns {Promise}
+ */
+function fetchConfig() {
+  return new Promise(resolve => {
+    config.fetch({
+      success: resolve,
+      error: resolve
+    });
   });
 }
 
@@ -55,8 +72,9 @@ export function initRouter() {
  */
 export function initSync(callback = () => {}) {
   let sync = Promise.resolve();
-  config.fetch({reset: true});
   sync
+    .then(() => console.log('sync:load-config'))
+    .then(fetchConfig)
     .then(() => console.log('sync:start'))
     .then(() => new Sync(shifts))
     .then(() => new Sync(days))
@@ -66,3 +84,4 @@ export function initSync(callback = () => {}) {
     .then(() => console.log('sync:end'));
   return sync;
 }
+// - sync
