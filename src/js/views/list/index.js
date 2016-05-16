@@ -34,19 +34,21 @@ class Simple extends Backbone.View {
   }
 
   render() {
+    this.$el.empty();
     this.collection.each(this.addItem, this);
     return this;
   }
 }
 
-function href(model) {
-  return model.get('id');
+function defaultHref(model) {
+  let id = model.get('id');
+  return `#${id}`;
 }
 
 // список со ссылками
 class SimpleLink extends Simple {
-  initialize(params) {
-    this.href = params.href || href;
+  initialize({href = defaultHref} = {}) {
+    this.href = href;
   }
 
   get Item() {

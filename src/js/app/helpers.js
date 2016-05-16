@@ -8,6 +8,7 @@ import shifts   from '../collections/shifts';
 import days     from '../collections/days';
 import schedule from '../collections/schedule';
 import places   from '../collections/places';
+import contacts from '../collections/contacts';
 
 // + router
 /**
@@ -44,7 +45,9 @@ export function initRouter() {
 
   $(document).on('pageBeforeInit', e => {
     let page = e.detail.page;
-    load(page.name).then(route => route(page.container, page.query || {}));
+    load(page.name)
+      .then(route => route(page.container, page.query || {}))
+      .catch(e => console.log(e));
   });
 }
 // - router
@@ -81,6 +84,7 @@ export function initSync(callback = () => {}) {
     .then(() => new Sync(schedule))
     .then(() => callback())
     .then(() => new Sync(places))
+    .then(() => new Sync(contacts))
     .then(() => console.log('sync:end'));
   return sync;
 }

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Главная",
+    "code": "index.html"
+  },
+  {
+    "name": "Личный кабинет",
+    "code": "cabinet.html"
+  },
+  {
+    "name": "О форуме",
+    "code": "about.html"
+  },
+  {
+    "name": "Площадки",
+    "code": "places.html"
+  },
+  {
+    "name": "Новости",
+    "code": "news.html"
+  },
+  {
+    "name": "Эксперты",
+    "code": "experts.html"
+  },
+  {
+    "name": "Программы",
+    "code": "schedule.html"
+  },
+  {
+    "name": "Утро 24",
+    "code": "utro24.html"
+  }
+]

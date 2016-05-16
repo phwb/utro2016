@@ -47,9 +47,7 @@ export function assets() {
 export function views() {
   return gulp.src('./src/templates/**/*.jade')
     .pipe(plumber(plumberOptions))
-    .pipe(pug({
-      pretty: true
-    }))
+    .pipe(pug())
     .pipe(gulp.dest('./build'));
 }
 
@@ -94,6 +92,10 @@ export function webpack(cb) {
         {
           test: /\.jade$/,
           loader: 'pug-html'
+        },
+        {
+          test: /\.json$/,
+          loader: 'json'
         }
       ]
     },
@@ -116,7 +118,7 @@ export function webpack(cb) {
 }
 
 export function watch() {
-  gulp.watch('./src/templates/*.jade', views);
+  gulp.watch('./src/templates/**/*.jade', views);
   gulp.watch('./src/assets/**/*.js', assets);
 }
 

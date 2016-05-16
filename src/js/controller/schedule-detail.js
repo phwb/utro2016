@@ -1,8 +1,8 @@
 'use strict';
 
-import Page from '../views/place/page';
+import Page from '../views/schedule/detail';
 
-module.exports = function (container, {id}) {
+module.exports = function (container, {id} = {}) {
   if (!id) {
     return false;
   }

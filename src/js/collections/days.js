@@ -6,4 +6,6 @@ let Days = Backbone.Collection.extend({
   sync: Backbone.localforage.sync('days')
 });
 
+export {Days};
+
 export default new Days();

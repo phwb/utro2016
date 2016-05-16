@@ -3,7 +3,10 @@
 import Page from '../views/main/page';
 
 module.exports = function (container) {
-  return new Page({
+  let page = new Page({
     el: container
   });
+  page.render();
+  
+  return page;
 };

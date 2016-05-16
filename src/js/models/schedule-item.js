@@ -7,8 +7,9 @@ let ScheduleItem = Backbone.Model.extend({
     timestamp: 0,
     start: '',
     end: '',
-    placeID: 0,
     location: '',
+    // зависимые поля, по ним строятся выборки
+    placeID: 0,
     dayID: 0
   },
   syncMap: {

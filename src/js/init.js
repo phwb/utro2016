@@ -12,7 +12,9 @@ lf.config({
 initRouter();
 
 // установка начальных параметров Framework7
-// при чем инициализация в самом низу скрипта
+// --------------
+// при чем инициализация в самом низу скрипта в функции initSync,
+// это гарантирует загрузку некоторых коллекций до старта приложения
 let app = new Framework7({
   swipePanel: 'left',
   animateNavBackIcon: true,
@@ -27,7 +29,7 @@ app.addView('.view-main', {
 // начало синхронизации
 initSync(function () {
   let $ = Backbone.$;
-  
+
   // закрываем модальное окно при выборе смены
   // событие генерится вьюшке views/main/modal
   $('.login-screen').on('close:modal', function () {
