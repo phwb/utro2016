@@ -1,0 +1,19 @@
+.navbar
+  .navbar-inner
+    .left
+      a.link.back.icon-only(href='#'): i.icon.icon-back
+    .center.sliding Эксперты
+    .right
+      a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
+    .subnavbar
+      .buttons-row
+        a.button.tab-link.active(href='#experts-federal') Федеральные эксперты
+        a.button.tab-link(href='#experts-places') Эксперты площадок
+.pages
+  .page.with-subnavbar(data-page='expert-list')
+    .tabs
+      .page-content.tab.active(id='experts-federal')
+        .list-block
+      .page-content.tab(id='experts-places')
+        .list-block
+

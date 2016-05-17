@@ -1,34 +1,34 @@
 [
   {
     "name": "Главная",
-    "code": "index.html"
+    "link": "index.html"
   },
   {
     "name": "Личный кабинет",
-    "code": "cabinet.html"
+    "link": "cabinet.html"
   },
   {
     "name": "О форуме",
-    "code": "about.html"
+    "link": "about.html"
   },
   {
     "name": "Площадки",
-    "code": "places.html"
+    "link": "places.html"
   },
   {
     "name": "Новости",
-    "code": "news/index.html"
+    "link": "news/index.html"
   },
   {
     "name": "Эксперты",
-    "code": "experts.html"
+    "link": "experts/index.html"
   },
   {
     "name": "Программы",
-    "code": "schedule.html"
+    "link": "schedule.html"
   },
   {
     "name": "Утро 24",
-    "code": "utro24.html"
+    "link": "utro24.html"
   }
 ]

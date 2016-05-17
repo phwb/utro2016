@@ -18,7 +18,7 @@ function getModelParams(obj, map = {}) {
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       let mapKey = map.hasOwnProperty(key) ? map[key] : key.toLocaleLowerCase();
-      result[mapKey] = obj[key];
+      result[mapKey] = obj[key] ? obj[key] : 'empty';
     }
   }
 

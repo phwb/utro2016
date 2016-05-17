@@ -11,6 +11,7 @@ import schedule from '../collections/schedule';
 import places   from '../collections/places';
 import contacts from '../collections/contacts';
 import news     from '../collections/news';
+import experts  from '../collections/experts';
 
 // + router
 /**
@@ -87,7 +88,11 @@ export function initSync(callback = () => {}) {
     .then(() => callback())
     .then(() => new Sync(places))
     .then(() => new Sync(contacts))
+    .then(() => new Sync(experts))
     .then(() => new Sync(news))
+    // .then(() => new Sync(utro24))
+    // .then(() => new Sync(forum))
+    // .then(() => new Sync(polls))
     .then(() => console.log('sync:end'));
   return sync;
 }

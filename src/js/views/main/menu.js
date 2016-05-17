@@ -9,7 +9,7 @@ class MenuItem extends Backbone.Model {
   get defaults() {
     return {
       name: '',
-      code: ''
+      link: ''
     };
   }
 }
@@ -53,7 +53,7 @@ class Panel extends Backbone.View {
     let view = new MenuLink({
       collection: this.collection,
       href: function (model) {
-        return model.get('code');
+        return model.get('link');
       }
     });
 
