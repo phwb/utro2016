@@ -1,12 +1,15 @@
 'use strict';
 
-import {initRouter, initSync} from './app/helpers';
+import {initRouter, initSync, formatDate} from './app/helpers';
 
 // первичная настройки подключения к БД
 let lf = Backbone.localforage.localforageInstance;
 lf.config({
   name: 'utro2016'
 });
+
+// функция форматирования даты
+_.template.formatDate = formatDate;
 
 // инициализация роутера
 initRouter();

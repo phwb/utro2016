@@ -31,12 +31,12 @@ let _menuLink =`
 </a>`;
 class MenuLink extends SimpleLink {
   get Item() {
-    class MenuItem extends super.Item {
+    class Item extends super.Item {
       get template() {
         return _.template(_menuLink);
       }
     }
-    return MenuItem;
+    return Item;
   }
 }
 
@@ -56,11 +56,6 @@ class Panel extends Backbone.View {
         return model.get('code');
       }
     });
-
-    let m = new MenuLink({
-      collection: this.collection
-    });
-    m.render();
 
     this.$content.html( view.render().$el );
     return this;
