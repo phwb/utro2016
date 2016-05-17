@@ -68,4 +68,4 @@ class SimpleLink extends Simple {
   }
 }
 
-export {Simple, SimpleLink};
+export {Item, Simple, SimpleLink};

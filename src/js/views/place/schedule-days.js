@@ -11,7 +11,7 @@ class ScheduleDays extends SimpleLink {
   initialize({placeID = 0} = {}) {
     this.href = function (model) {
       let dayID = model.get('id');
-      return `schedule/list.html?day=${dayID}&place=${placeID}`;
+      return `schedule/index.html?day=${dayID}&place=${placeID}`;
     };
   }
 
