@@ -124,7 +124,8 @@ export function watch() {
 
 export function serve() {
   browserSync.init({
-    server: './build'
+    server: './build',
+    notify: false
   });
 
   browserSync.watch('./build/**/*.*').on('change', browserSync.reload);

@@ -1,3 +1,45 @@
-//
-   Created by pheon on 17.05.2016.
+.navbar
+  .navbar-inner
+    .left
+      a.link.back.icon-only(href='#'): i.icon.icon-back
+    .center.sliding Личный кабинет
+    .right
+      a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
+    .subnavbar
+      .buttons-row
+        a.button.tab-link(href='#cabinet-schedule') Мое раписание
+        a.button.tab-link.active(href='#cabinet-settings') Настройки
+.pages
+  .page.with-subnavbar(data-page='cabinet')
+    .tabs
+      .page-content.tab(id='cabinet-schedule')
+        .list-block
+      .page-content.active.tab(id='cabinet-settings')
+        .list-block
+          ul
+            li
+              .item-content
+                .item-inner
+                  .item-title.label
+                    | Уведомлять о
+                    br
+                    | событиях
+                    br
+                    | в моем
+                    br
+                    | расписании
+                  .item-input
+                    select
+                      option за 10 минут
+                      option за 20 минут
+                      option за 30 минут
+                      option за 1 час
+            li
+              .item-content
+                .item-inner
+                  .item-title.label Выбор смены
+                  #shift-select.item-input
+                    select
+                      option Первая
+                      option Вторая
 
