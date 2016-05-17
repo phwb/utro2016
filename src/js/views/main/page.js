@@ -10,7 +10,7 @@ class List extends SimpleLink {
   initialize() {
     this.href = function (model) {
       let id = model.get('id');
-      return `place.html?id=${id}`;
+      return `places/detail.html?id=${id}`;
     };
   }
 }

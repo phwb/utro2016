@@ -4,7 +4,7 @@ import {SimpleLink} from '../list/index';
 // коллецкия
 import news from '../../collections/news';
 
-let _newsLink = `
+let _link = `
 <a href="<%= href %>" class="item-link item-content">
   <div class="item-media"><img src="<%= previewPicture %>" width="80"></div>
   <div class="item-inner">
@@ -22,7 +22,7 @@ class List extends SimpleLink {
   get Item() {
     class Item extends super.Item {
       get template() {
-        return _.template(_newsLink);
+        return _.template(_link);
       }
     }
     return Item;

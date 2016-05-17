@@ -3,8 +3,8 @@
 // коллекции
 import places from '../../collections/places';
 // дополнительные вьюшки
-import ScheduleDays from './schedule-days';
-import ContactList from './contacts';
+import ScheduleDays from './tab-schedule-days';
+import ContactList from './tab-contacts';
 
 class Page extends Backbone.View {
   initialize(params) {

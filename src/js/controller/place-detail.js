@@ -1,6 +1,6 @@
 'use strict';
 
-import Page from '../views/place/page';
+import Page from '../views/place/detail';
 
 module.exports = function (container, {id}) {
   if (!id) {
