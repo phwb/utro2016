@@ -26,9 +26,12 @@ class List extends SimpleLink {
 }
 
 class Page extends Backbone.View {
-  initialize() {
-    let collection = this.collection = experts;
+  get collection() {
+    return experts;
+  }
 
+  initialize() {
+    let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 
@@ -52,7 +55,7 @@ class Page extends Backbone.View {
       console.log('не нашли ни одного федерального эксперта');
       return this;
     }
-    
+
     let view = new List({
       collection: new Experts(experts),
       href: function (model) {

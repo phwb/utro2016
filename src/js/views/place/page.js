@@ -6,8 +6,12 @@ import {Places, default as places} from '../../collections/places';
 import config from '../../models/config';
 
 class Page extends Backbone.View {
+  get collection() {
+    return places;
+  }
+  
   initialize() {
-    let collection = this.collection = places;
+    let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 

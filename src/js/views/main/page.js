@@ -16,6 +16,10 @@ class List extends SimpleLink {
 }
 
 class Page extends Backbone.View {
+  get collection() {
+    return allPlaces;
+  }
+
   initialize() {
     this.$list = this.$el.find('.list-block');
 
@@ -24,7 +28,7 @@ class Page extends Backbone.View {
     // «reset» происходит когда вызывается функция fetch у коллекции,
     // но reset так же вызывается когда коллекция пуста, то есть при первом запуске приложения
     // для этого как раз и есть событие «sync:ajax.end»
-    let collection = this.collection = allPlaces;
+    let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 
@@ -66,9 +70,8 @@ class Page extends Backbone.View {
 
     // маленький хак, потом наверно придется переделать
     // для импорта массива в коллекцию
-    let col = new Places(places);
     let list = new List({
-      collection: col
+      collection: new Places(places)
     });
 
     this.$list.html( list.render().$el );

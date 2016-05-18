@@ -30,8 +30,12 @@ class List extends SimpleLink {
 }
 
 class Page extends Backbone.View {
+  get collection() {
+    return news;
+  }
+  
   initialize() {
-    let collection = this.collection = news;
+    let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 

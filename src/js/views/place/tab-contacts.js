@@ -3,11 +3,16 @@
 import {Simple} from '../ui/list';
 import {Contacts, default as allContacts} from '../../collections/contacts';
 
+let place = 0;
 class ContactList extends Backbone.View {
-  initialize({placeID = 0} = {}) {
-    this.placeID = placeID;
+  get collection() {
+    return allContacts;
+  }
 
-    let collection = this.collection = allContacts;
+  initialize({placeID = 0} = {}) {
+    place = placeID;
+
+    let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 
@@ -21,12 +26,12 @@ class ContactList extends Backbone.View {
   }
 
   addAll() {
-    if (!this.placeID) {
+    if (!place) {
       console.log('нет ID площадки');
       return this;
     }
 
-    let contacts = this.collection.where({placeID: this.placeID});
+    let contacts = this.collection.where({placeID: place});
     let collection = new Contacts(contacts);
 
     let view = new Simple({

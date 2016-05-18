@@ -3,21 +3,16 @@
 import {SimpleLink} from '../ui/list';
 import {Schedule, default as allSchedule} from '../../collections/schedule';
 
-class List extends SimpleLink {
-  initialize() {
-    this.href = function (model) {
-      let id = model.get('id');
-      return `schedule/detail.html?id=${id}`;
-    };
-  }
-}
-
 class Page extends Backbone.View {
+  get collection() {
+    return allSchedule;
+  }
+
   initialize({day, place = 0} = {}) {
     this.dayID = day;
     this.placeID = place;
 
-    let collection = this.collection = allSchedule;
+    let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 
@@ -40,6 +35,10 @@ class Page extends Backbone.View {
       dayID: this.dayID,
       placeID: this.placeID
     });
+    if (!schedule.length) {
+      console.log('почему то пустое расписание');
+      return this;
+    }
     schedule = schedule.map(model => {
       let name = model.get('name') + ', ' + model.get('start');
       return {
@@ -47,10 +46,13 @@ class Page extends Backbone.View {
         name: name
       };
     });
-    let collection = new Schedule(schedule);
 
-    let view = new List({
-      collection: collection
+    let view = new SimpleLink({
+      collection: new Schedule(schedule),
+      href: function (model) {
+        let id = model.get('id');
+        return `schedule/detail.html?id=${id}`;
+      }
     });
 
     this.$list.html( view.render().$el );

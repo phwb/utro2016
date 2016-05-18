@@ -37,6 +37,8 @@ class Select extends Backbone.View {
     return 'select';
   }
 
+  // не большой хак для события change, так как на option нельзя 
+  // повестить какое либо событие, то вешам его на весь select
   get events() {
     return {
       'change': 'changeHandler'

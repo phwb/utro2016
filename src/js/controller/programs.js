@@ -1,6 +1,6 @@
 'use strict';
 
-import Page from '../views/place/page';
+import Page from '../views/programs/page';
 
 module.exports = function (container) {
   let page = new Page({

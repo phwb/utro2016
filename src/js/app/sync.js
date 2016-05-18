@@ -14,14 +14,16 @@ let defaults = {
  */
 function getModelParams(obj, map = {}) {
   let result = {};
-
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       let mapKey = map.hasOwnProperty(key) ? map[key] : key.toLocaleLowerCase();
-      result[mapKey] = obj[key] ? obj[key] : 'empty';
+      // если пришло значение, то установми его
+      // иначе его по дефолту поставит Backbone
+      if (!!obj[key]) {
+        result[mapKey] = obj[key];
+      }
     }
   }
-
   return result;
 }
 
