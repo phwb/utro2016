@@ -1,6 +1,6 @@
 'use strict';
 
-import {SimpleLink} from '../list/index';
+import {SimpleLink} from '../ui/list';
 import {Schedule, default as allSchedule} from '../../collections/schedule';
 
 class List extends SimpleLink {

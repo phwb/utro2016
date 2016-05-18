@@ -1,12 +1,13 @@
 'use strict';
 
-import {SimpleLink} from '../list/index';
+import {SimpleLink} from '../ui/list';
 import {Days, default as allDays} from '../../collections/days';
 import config from '../../models/config';
 
 let days = allDays.where({shiftID: config.get('shiftID')});
 let daysCollection = new Days(days);
 
+// дописать событие изменения смены
 class ScheduleDays extends SimpleLink {
   initialize({placeID = 0} = {}) {
     this.href = function (model) {

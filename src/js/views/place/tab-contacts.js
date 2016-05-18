@@ -1,6 +1,6 @@
 'use strict';
 
-import {Simple} from '../list/index';
+import {Simple} from '../ui/list';
 import {Contacts, default as allContacts} from '../../collections/contacts';
 
 class ContactList extends Backbone.View {

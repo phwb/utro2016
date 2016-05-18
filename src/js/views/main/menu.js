@@ -1,7 +1,7 @@
 'use strict';
 
 import items from './menu.json';
-import {SimpleLink} from '../list/index';
+import {SimpleLink} from '../ui/list';
 
 // модель... не стал выносисть в отедльный файл, так как по
 // факту используется только тут

@@ -1,6 +1,6 @@
 'use strict';
 
-import {SimpleLink} from '../list/index';
+import {SimpleLink} from '../ui/list';
 // коллецкия
 import {Experts, default as experts} from '../../collections/experts';
 

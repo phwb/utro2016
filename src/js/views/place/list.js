@@ -1,6 +1,6 @@
 'use strict';
 
-import {SimpleLink} from '../list/index';
+import {SimpleLink} from '../ui/list';
 // коллецкия
 import {Places, default as places} from '../../collections/places';
 import config from '../../models/config';

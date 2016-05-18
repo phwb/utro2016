@@ -2,7 +2,7 @@
 
 import config                         from '../../models/config';
 import {Places, default as allPlaces} from '../../collections/places';
-import {SimpleLink}                   from '../list/index';
+import {SimpleLink}                   from '../ui/list';
 // меню приложения
 import './menu';
 

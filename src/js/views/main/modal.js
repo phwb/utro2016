@@ -2,7 +2,7 @@
 
 import config   from '../../models/config';
 import shifts   from '../../collections/shifts';
-import {Simple} from '../list/index';
+import {Simple} from '../ui/list';
 
 class Modal extends Backbone.View {
   initialize() {
