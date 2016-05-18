@@ -5,11 +5,7 @@ import config from '../../models/config';
 import shifts from '../../collections/shifts';
 
 class ShiftSelect extends Select {
-  initialize() {
-    this.listenTo(this.collection, 'selected', this.setShift);
-  }
-
-  setShift(model) {
+  change(model) {
     let id = model.get('id');
     config.set({shiftID: id}).save();
   }

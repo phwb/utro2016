@@ -25,6 +25,14 @@ class Option extends Backbone.View {
 }
 
 class Select extends Backbone.View {
+  initialize() {
+    this.listenTo(this.collection, 'selected', this.change);
+  }
+
+  change(model) {
+    return model;
+  }
+
   tagName() {
     return 'select';
   }
