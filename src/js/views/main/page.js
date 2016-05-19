@@ -3,15 +3,26 @@
 import config                         from '../../models/config';
 import {Places, default as allPlaces} from '../../collections/places';
 import {SimpleLink}                   from '../ui/list';
+import _item                          from './templates/page-list-item.jade';
 // меню приложения
 import './menu';
 
 class List extends SimpleLink {
-  initialize() {
-    this.href = function (model) {
-      let id = model.get('id');
-      return `places/detail.html?id=${id}`;
-    };
+  get className() {
+    return 'b-main-teasers__lst';
+  }
+
+  get Item() {
+    class Item extends super.Item {
+      get template() {
+        return _.template(_item);
+      }
+
+      get className() {
+        return 'b-main-teasers__item';
+      }
+    }
+    return Item;
   }
 }
 
@@ -21,7 +32,8 @@ class Page extends Backbone.View {
   }
 
   initialize() {
-    this.$list = this.$el.find('.list-block');
+    this.$list = this.$el.find('.b-main-teasers');
+    console.log(this.$list);
     this.$pull = this.$el.find('.pull-to-refresh-content');
 
     // событие происходят в функции initSync()
@@ -89,7 +101,11 @@ class Page extends Backbone.View {
     // маленький хак, потом наверно придется переделать
     // для импорта массива в коллекцию
     let list = new List({
-      collection: new Places(places)
+      collection: new Places(places),
+      href: function (model) {
+        let id = model.get('id');
+        return `places/detail.html?id=${id}`;
+      }
     });
 
     this.$list.html( list.render().$el );

@@ -39,8 +39,15 @@ export function assets() {
       let f7path = './node_modules/framework7/dist/';
       let build = './build/js/vendor/framework7/';
 
+      // Framework 7 assets
       gulp.src(f7path + 'css/framework7.ios.min.css').pipe(gulp.dest(build + 'css'));
       gulp.src(f7path + 'img/**').pipe(gulp.dest(build + 'img'));
+
+      // верстка
+      gulp.src('./src/assets/svg.js').pipe(gulp.dest('./build/js/vendor'));
+      gulp.src('./src/assets/common.css').pipe(gulp.dest('./build/css'));
+      gulp.src('./src/assets/img/**').pipe(gulp.dest('./build/img'));
+      gulp.src('./src/assets/fonts/**').pipe(gulp.dest('./build/fonts'));
     });
 }
 

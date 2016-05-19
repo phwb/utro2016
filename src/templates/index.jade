@@ -7,38 +7,67 @@ html
     meta(name='apple-mobile-web-app-status-bar-style', content='black')
     title Утро 2016
     link(rel='stylesheet', href='./js/vendor/framework7/css/framework7.ios.min.css')
-    style.
-      .ks-card-header-pic .card-header {
-        height: 40vw;
-        background-size: cover;
-        background-position: center;
-      }
-      .color-white {
-        color: #fff;
-      }
+    link(rel='stylesheet', href='./css/common.css')
   body
+    #svg-icons
+
     .statusbar-overlay
 
     .panel-overlay
     .panel.panel-left.panel-reveal.layout-dark
       .content-block
-        p Тут можно какой то текст по желанию
-      .list-block
+        .b-main-nav
 
     .views
       .view.view-main
         .navbar
-          .navbar-inner
-            .center.sliding Утро 2016
-            .right
-              a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
+          .navbar-inner.b-header
+            .left.sliding
+              .b-logo
+                .b-logo__header Утр
+                =' '
+                svg.b-logo__icon
+                  use(xlink:href='#icon_logo')
+                =' '
+                .b-logo__year 2016
+            a.link.open-panel.b-nav-button.b-header__nav-button(href='#')
+              .b-nav-button__body
+                .b-nav-button__item.b-nav-button__item_top
+                .b-nav-button__item.b-nav-button__item_center
+                .b-nav-button__item.b-nav-button__item_bottom
+            .subnavbar
+              .b-sub-header
+                .b-sub-header__item
+                  a.b-sub-header__button.b-button.b-button_width_fluid.b-button_style_bordered.b-button_font-size_small(href='cabinet/index.html') Мое расписание
+                .b-sub-header__item
+                  a.b-sub-header__button.b-button.b-button_width_fluid.b-button_style_bordered.b-button_font-size_small(href='#') Карта
+
         .pages.navbar-through
-          .page(data-page='main')
+          .page.with-subnavbar(data-page='main')
             .page-content.pull-to-refresh-content(data-ptr-distance='55')
               .pull-to-refresh-layer
                 .preloader
                 .pull-to-refresh-arrow
-              .list-block
+              .content-block
+                .content-block-inner
+                  .b-main-teasers
+
+            .toolbar
+              .toolbar-inner
+                .b-footer-nav
+                  .b-footer-nav__item.b-footer-nav__item_wide
+                    a.b-feedback-button.b-feedback-button_with-header.item-link(href='#')
+                      .b-feedback-button__button
+                        .b-feedback-button__img
+                          svg.b-feedback-button__icon
+                            use(xlink:href='#icon_phone')
+                      .b-feedback-button__h Связаться с организаторами
+                  .b-footer-nav__item.b-footer-nav__item_button
+                    a.b-footer-button.item-link(href='#')
+                      .b-footer-button__tip.b-tip
+                        .b-tip__body 9
+                        svg.b-footer-button__icon.b-footer-button__icon_bell
+                          use(xlink:href='#icon_bell')
 
     .login-screen.modal-in
       .view
@@ -47,5 +76,6 @@ html
             .login-screen-title Выберите смену
             .list-block Загрузка смен...
 
+    script(src='./js/vendor/svg.js')
     script(src='./js/vendor/vendor.js')
     script(src='./js/app/init.js')

@@ -2,6 +2,7 @@ let Place = Backbone.Model.extend({
   defaults: {
     id: 0,
     name: '',
+    shortName: '',
     code: '',
     type: 'html',
     text: '',
@@ -15,7 +16,8 @@ let Place = Backbone.Model.extend({
     DETAIL_TEXT_TYPE: 'type',
     DETAIL_TEXT: 'text',
     TIMESTAMP_X: 'timestamp',
-    SHIFT_ID: 'shiftID'
+    SHIFT_ID: 'shiftID',
+    SHORT_NAME: 'shortName'
   },
   sync: Backbone.localforage.sync('place')
 });

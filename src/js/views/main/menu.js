@@ -20,20 +20,20 @@ class Menu extends Backbone.Collection {
   }
 }
 
-let _menuLink =`
-<a href="<%= href %>" class="item-link close-panel">
-  <div class="item-content">
-    <div class="item-media"><i class="icon icon-f7"></i></div>
-    <div class="item-inner">
-      <div class="item-title"><%= name %></div>
-    </div>
-  </div>
-</a>`;
+let _item ='<a href="<%= href %>" class="item-link close-panel b-main-nav__act"><%= name %></a>';
 class MenuLink extends SimpleLink {
+  get className() {
+    return 'b-main-nav__lst';
+  }
+
   get Item() {
     class Item extends super.Item {
+      get className() {
+        return 'b-main-nav__item';
+      }
+
       get template() {
-        return _.template(_menuLink);
+        return _.template(_item);
       }
     }
     return Item;
@@ -46,7 +46,7 @@ class Panel extends Backbone.View {
   }
 
   initialize() {
-    this.$content = this.$el.find('.list-block');
+    this.$content = this.$el.find('.b-main-nav');
   }
 
   render() {
