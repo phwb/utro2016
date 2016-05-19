@@ -61,11 +61,15 @@ app.addView('.view-main', {
 initSync(function () {
   let $ = Backbone.$;
 
-  // закрываем модальное окно при выборе смены
-  // событие генерится вьюшке views/main/modal
-  $('.login-screen').on('close:modal', function () {
-    app.closeModal();
-  });
+  // подписываемся на событие окончания загрузки
+  // сделано для того чтобы не пробрасывать app во вьюшки
+  // --------------
+  // собственно как и событие закрытия модального окна
+  $(document).on('refreshend', '.pull-to-refresh-content', () => app.pullToRefreshDone());
+
+  // закрываем модальное окно при выборе "смены"
+  // событие генерируется вьюшке views/main/modal
+  $('.login-screen').on('close:modal', () => app.closeModal());
 
   // где то по пути инициализируем само приложение
   app.init();

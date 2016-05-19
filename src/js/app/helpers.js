@@ -93,7 +93,8 @@ export function initSync(callback = () => {}) {
     // .then(() => new Sync(utro24))
     // .then(() => new Sync(forum))
     // .then(() => new Sync(polls))
-    .then(() => console.log('sync:end'));
+    .then(() => console.log('sync:end'))
+    .catch(e => console.log(e));
   return sync;
 }
 // - sync

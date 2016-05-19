@@ -22,6 +22,7 @@ class Page extends Backbone.View {
 
   initialize() {
     this.$list = this.$el.find('.list-block');
+    this.$pull = this.$el.find('.pull-to-refresh-content');
 
     // событие происходят в функции initSync()
     // --------------
@@ -37,6 +38,23 @@ class Page extends Backbone.View {
     // может произойти когда пользователь долго смотрит на экран выбора площадки
     // а в этот момент события «reset» и «sync:ajax.end» уже произошли
     this.listenTo(config, 'change:shiftID', this.changeShift);
+  }
+
+  // события pull to refresh
+  get events() {
+    return {
+      'refresh .pull-to-refresh-content': 'refreshStart',
+      'refreshdone .pull-to-refresh-content': 'refreshDone'
+    };
+  }
+
+  refreshStart() {
+    // после завершения операвции обновления нужно вызвать триггер  "refreshend"
+    this.collection.refresh().then(() => this.$pull.trigger('refreshend'));
+  }
+
+  refreshDone() {
+    this.addAll();
   }
 
   changeShift() {

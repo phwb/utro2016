@@ -72,7 +72,7 @@ export function webpack(cb) {
   // например в коде я использую Promise, для андроида нужно загрузить полифил (наверное, практика покажет)
   let options = {
     output: {
-      publicPath: '/js/app/'
+      publicPath: './js/app/'
     },
 
     watch: true,

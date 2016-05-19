@@ -34,7 +34,10 @@ html
               a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
         .pages.navbar-through
           .page(data-page='main')
-            .page-content
+            .page-content.pull-to-refresh-content(data-ptr-distance='55')
+              .pull-to-refresh-layer
+                .preloader
+                .pull-to-refresh-arrow
               .list-block
 
     .login-screen.modal-in

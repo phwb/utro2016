@@ -33,8 +33,11 @@ class Page extends Backbone.View {
   get collection() {
     return news;
   }
-  
+
   initialize() {
+    this.$pull = this.$el.find('.pull-to-refresh-content');
+    console.log(this.$pull);
+
     let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
@@ -43,6 +46,23 @@ class Page extends Backbone.View {
     if (collection.length) {
       this.addAll();
     }
+  }
+
+  // события pull to refresh
+  get events() {
+    return {
+      'refresh .pull-to-refresh-content': 'refreshStart',
+      'refreshdone .pull-to-refresh-content': 'refreshDone'
+    };
+  }
+
+  refreshStart() {
+    // после завершения операвции обновления нужно вызвать триггер  "refreshend"
+    this.collection.refresh().then(() => this.$pull.trigger('refreshend'));
+  }
+
+  refreshDone() {
+    this.addAll();
   }
 
   loadSuccess() {
