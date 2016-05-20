@@ -1,13 +1,37 @@
 'use strict';
 
-import {SimpleLink} from '../ui/list';
+import _item                      from './templates/detail-schedule-item.jade';
+import {SimpleLink}               from '../ui/list';
 import {Days, default as allDays} from '../../collections/days';
-import config from '../../models/config';
+import config                     from '../../models/config';
+
+class List extends SimpleLink {
+  get className() {
+    return 'b-list__lst';
+  }
+
+  get Item() {
+    class Item extends super.Item {
+      get className() {
+        return 'b-list__item';
+      }
+
+      get template() {
+        return _.template(_item);
+      }
+    }
+    return Item;
+  }
+}
 
 let place = 0;
 class ScheduleDays extends Backbone.View {
   get collection() {
     return allDays;
+  }
+
+  get className() {
+    return 'b-list';
   }
 
   initialize({placeID = 0} = {}) {
@@ -37,7 +61,7 @@ class ScheduleDays extends Backbone.View {
       return this;
     }
 
-    let list = new SimpleLink({
+    let list = new List({
       collection: new Days(days),
       href: function (model) {
         let day = model.get('id');

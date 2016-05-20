@@ -1641,8 +1641,7 @@ input:-ms-input-placeholder {
 /* ---------------------------------------END--- */
 /* b-welcome-screen */
 /* --------------------------------------------- */
-.b-welcome-screen {
-  position: relative;
+.page.b-welcome-screen {
   background: -webkit-linear-gradient(bottom, #0589c5, #38bbec);
   background: linear-gradient(to top, #0589c5, #38bbec);
 }
@@ -1654,7 +1653,6 @@ input:-ms-input-placeholder {
   bottom: 0;
   left: 0;
   overflow: hidden;
-  text-indent: 9999px;
 }
 .b-welcome-screen__img {
   width: 530px;

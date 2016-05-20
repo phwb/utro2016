@@ -13,6 +13,18 @@ import contacts from '../collections/contacts';
 import news     from '../collections/news';
 import experts  from '../collections/experts';
 
+// + logger
+export function logger() {
+  console.log.apply(console, arguments);
+}
+logger.info = function () {
+  console.info.apply(console, arguments);
+};
+logger.error = function () {
+  console.error.apply(console, arguments);
+};
+// - logger
+
 // + router
 /**
  * Роутер приложения
@@ -79,22 +91,22 @@ function fetchConfig() {
 export function initSync(callback = () => {}) {
   let sync = Promise.resolve();
   sync
-    .then(() => console.log('sync:load-config'))
+    .then(() => logger('sync:load-config'))
     .then(fetchConfig)
-    .then(() => console.log('sync:start'))
+    .then(() => logger('sync:start'))
     .then(() => new Sync(shifts))
     .then(() => new Sync(days))
     .then(() => new Sync(schedule))
     .then(() => callback())
-    .then(() => new Sync(places))
-    .then(() => new Sync(contacts))
-    .then(() => new Sync(experts))
-    .then(() => new Sync(news))
+    // .then(() => new Sync(places))
+    // .then(() => new Sync(contacts))
+    // .then(() => new Sync(experts))
+    // .then(() => new Sync(news))
     // .then(() => new Sync(utro24))
     // .then(() => new Sync(forum))
     // .then(() => new Sync(polls))
-    .then(() => console.log('sync:end'))
-    .catch(e => console.log(e));
+    .then(() => logger('sync:end'))
+    .catch(e => logger(e));
   return sync;
 }
 // - sync

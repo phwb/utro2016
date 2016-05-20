@@ -44,8 +44,8 @@ export function assets() {
       gulp.src(f7path + 'img/**').pipe(gulp.dest(build + 'img'));
 
       // верстка
-      gulp.src('./src/assets/svg.js').pipe(gulp.dest('./build/js/vendor'));
-      gulp.src('./src/assets/common.css').pipe(gulp.dest('./build/css'));
+      gulp.src('./src/assets/js/svg.js').pipe(gulp.dest('./build/js/vendor'));
+      gulp.src('./src/assets/css/common.css').pipe(gulp.dest('./build/css'));
       gulp.src('./src/assets/img/**').pipe(gulp.dest('./build/img'));
       gulp.src('./src/assets/fonts/**').pipe(gulp.dest('./build/fonts'));
     });
@@ -127,6 +127,7 @@ export function webpack(cb) {
 export function watch() {
   gulp.watch('./src/templates/**/*.jade', views);
   gulp.watch('./src/assets/**/*.js', assets);
+  gulp.watch('./src/assets/**/*.css', assets);
 }
 
 export function serve() {

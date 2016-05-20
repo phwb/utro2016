@@ -26,8 +26,8 @@ class Page extends Backbone.View {
     // если дошли до сюда, значит ошибок нет
     this.error = false;
     // кэшируем табы
-    this.$desc = this.$el.find('#place-desc .content-block');
-    this.$schedule = this.$el.find('#place-schedule .list-block');
+    this.$desc = this.$el.find('#place-desc .b-tabs__content');
+    this.$schedule = this.$el.find('#place-schedule .b-tabs__content');
     this.$contacts = this.$el.find('#place-contacts .list-block');
 
     this.model = model;

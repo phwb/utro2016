@@ -1,5 +1,7 @@
 'use strict';
 
+import {logger} from './helpers';
+
 let ajax = Backbone.ajax;
 let defaults = {
   domain: 'http://api.utro2016.loc'
@@ -43,7 +45,7 @@ class Sync {
   }
 
   fetch() {
-    console.group(`sync:fetch ${this.collection.url}`);
+    logger(`sync:fetch ${this.collection.url}`);
     let promise =  new Promise((resolve, reject) => {
       this.collection.fetch({
         reset: true,
@@ -100,12 +102,11 @@ class Sync {
   ajaxSuccess({resolve, reject}, data = {}) {
     let items = data.ITEMS || [];
     let timestamp = data.LAST_DATE_UPDATE || false;
+    let collection = this.collection;
 
     if (!items.length) {
-      reject(new Error('Пустой массив ITEMS'));
+      reject(new Error(`Пустой массив ITEMS ${collection.url}`));
     }
-
-    let collection = this.collection;
 
     // ищем карту соответствия полей с сервера полям из модели
     // если карта пустая, то просто создадим модель с полями
@@ -154,7 +155,7 @@ class Sync {
         lf.getItem(key)
           .then(value => {
             if (value) {
-              console.log(`обновление ${this.collection.url}, timestamp = ${value}`);
+              logger(`обновление ${this.collection.url}, timestamp = ${value}`);
               let params = {
                 url: url,
                 data: {
@@ -185,7 +186,7 @@ class Sync {
     let timestamp = data.LAST_DATE_UPDATE || false;
 
     if (!items.length) {
-      console.log(`обновления ${this.collection.url} не требуются`);
+      logger(`обновления ${this.collection.url} не требуются`);
       return this;
     }
 
@@ -207,7 +208,7 @@ class Sync {
 
   error() {
     // тут можно как то залогировать ошибки
-    console.log('reject', arguments);
+    logger.error('reject', arguments);
   }
 
   done() {

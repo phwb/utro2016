@@ -1,12 +1,66 @@
 'use strict';
 
-import config   from '../../models/config';
-import shifts   from '../../collections/shifts';
-import {Simple} from '../ui/list';
+// шаблоны
+import _item          from './templates/modal-list-item.jade';
+import _logo          from './templates/modal-logo.jade';
+// коллекции
+import config         from '../../models/config';
+import shifts         from '../../collections/shifts';
+// UI
+import {Simple, Item} from '../ui/list';
+
+class ListItem extends Item {
+  get tagName() {
+    return 'a';
+  }
+
+  get className() {
+    return 'b-section-list__item';
+  }
+
+  get attributes() {
+    return {
+      href: '#'
+    };
+  }
+
+  get template() {
+    return _.template(_item);
+  }
+
+  get events() {
+    return {
+      'click': 'setShift'
+    };
+  }
+
+  setShift() {
+    let id = this.model.get('id');
+    config.set({shiftID: id}).save();
+  }
+}
+
+class List extends Simple {
+  get tagName() {
+    return 'div';
+  }
+
+  get className() {
+    return 'b-section-list';
+  }
+
+  get Item() {
+    return ListItem;
+  }
+}
 
 class Modal extends Backbone.View {
+  get collection() {
+    return shifts;
+  }
+
   initialize() {
-    this.$list = this.$el.find('.list-block');
+    this.$list = this.$el.find('.b-welcome-screen__close');
     this.$modal = this.$el.closest('.login-screen');
 
     // пробуем поискать в конфиге выбранну смену
@@ -17,33 +71,24 @@ class Modal extends Backbone.View {
       return this;
     }
 
+    // слушаем изменения конфига, чтобы закрыть окно
+    this.listenTo(config, 'change:shiftID', this.hideModal);
+
     // к моменту инициализации этой вьюшки, смены уже загружены
     // это гарантирует промис в функции initSync
-    this.addAll(shifts);
+    this.addAll();
   }
 
-  addAll(collection) {
-    let list = new Simple({
-      collection: collection
+  addAll() {
+    let list = new List({
+      collection: this.collection
     });
 
-    this.$list.html( list.render().$el );
+    this.$list.html( list.render().$el ).prepend(_logo);
   }
 
-  get events() {
-    return {
-      'click .item-content': 'setShift'
-    };
-  }
-
-  setShift(e) {
-    let id = e.currentTarget.dataset.id;
-
-    e.preventDefault();
-    if (id) {
-      config.set({shiftID: id}).save();
-      this.$modal.trigger('close:modal');
-    }
+  hideModal() {
+    this.$modal.trigger('close:modal');
   }
 }
 

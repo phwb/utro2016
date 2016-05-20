@@ -2,8 +2,8 @@ let Shift = Backbone.Model.extend({
   defaults: {
     id: 0,
     name: '',
-    date: '',
-    selected: false
+    date: ''
+    // selected: false
   },
   syncMap: {
     ID: 'id',

@@ -71,10 +71,11 @@ html
 
     .login-screen.modal-in
       .view
-        .page(data-page='splash')
-          .page-content.login-screen-content
-            .login-screen-title Выберите смену
-            .list-block Загрузка смен...
+        .page.b-welcome-screen(data-page='splash')
+          .b-welcome-screen__close
+            svg.b-welcome-screen__img
+              use(xlink:href='#icon_welcome')
+
 
     script(src='./js/vendor/svg.js')
     script(src='./js/vendor/vendor.js')

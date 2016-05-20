@@ -33,7 +33,6 @@ class Page extends Backbone.View {
 
   initialize() {
     this.$list = this.$el.find('.b-main-teasers');
-    console.log(this.$list);
     this.$pull = this.$el.find('.pull-to-refresh-content');
 
     // событие происходят в функции initSync()

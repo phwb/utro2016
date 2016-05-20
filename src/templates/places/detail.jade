@@ -1,22 +1,28 @@
 .navbar
   .navbar-inner
     .left
-      a.link.back.icon-only(href='#'): i.icon.icon-back
-    .center.sliding Площадки
+      a.back.link.b-back(href='#')
+        svg.b-back__icon
+          use(xlink:href='#icon_back')
+    .center.sliding Урал трудовой
     .right
-      a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
-    .subnavbar
-      .buttons-row
-        a.button.tab-link.active(href='#place-desc') Описание
-        a.button.tab-link(href='#place-schedule') Расписание
-        a.button.tab-link(href='#place-contacts') Контакты
+      a.link.open-panel.b-nav-button(href='#')
+        .b-nav-button__body
+          .b-nav-button__item.b-nav-button__item_top
+          .b-nav-button__item.b-nav-button__item_center
+          .b-nav-button__item.b-nav-button__item_bottom
+    .subnavbar.subnavbar-no-space
+      .b-tab-nav
+        a.tab-link.b-tab-nav__item(href='#place-desc') Описание
+        a.tab-link.b-tab-nav__item.active(href='#place-schedule') Расписание
+        a.tab-link.b-tab-nav__item(href='#place-contacts') Контакты
 .pages
   .page.with-subnavbar(data-page='place-detail')
-    .tabs
-      .page-content.tab.active(id='place-desc')
-        .content-block
-      .page-content.tab(id='place-schedule')
-        .list-block
-      .page-content.tab(id='place-contacts')
+    .tabs.b-tabs
+      .page-content.tab.b-tabs__item(id='place-desc')
+        .b-tabs__content.b-tabs__content_page-bg
+      .page-content.tab.b-tabs__item(id='place-schedule', class='active')
+        .b-tabs__content.b-tabs__content_nospace
+      .page-content.tab.b-tabs__item(id='place-contacts')
         .list-block
 
