@@ -122,11 +122,14 @@ export function initSync(callback = () => {}) {
 export function formatDate(date) {
   let month = 'января февраля марта апреля мая июня июля августа сентября октября ноября декабря'.split(' ');
   let result = dateFormat.apply(dateFormat, arguments);
+  let daysName = 'ВС ПН ВТ СР ЧТ ПТ СБ'.split(' ');
 
   if (typeof(date) === 'string') {
     date = arguments[1];
   }
 
-  return result.replace(/Mm/g, month[date.getMonth()]);
+  return result
+    .replace(/Mm/g, month[date.getMonth()])
+    .replace(/D/g, daysName[date.getDay()]);
 }
 // - форматирование даты

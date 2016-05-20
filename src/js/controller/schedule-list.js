@@ -13,8 +13,8 @@ module.exports = function (container, {day, place = 0} = {}) {
 
   let page = new Page({
     el: container,
-    day: day,
-    place: place
+    dayID: day,
+    placeID: place
   });
   page.render();
 

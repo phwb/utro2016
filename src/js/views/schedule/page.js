@@ -1,25 +1,63 @@
 'use strict';
 
-import {SimpleLink} from '../ui/list';
+import _item                              from './templates/page-list-item.jade';
+import {logger}                           from '../../app/helpers';
+import {SimpleLink}                       from '../ui/list';
 import {Schedule, default as allSchedule} from '../../collections/schedule';
+import days                               from '../../collections/days';
 
+class List extends SimpleLink {
+  get className() {
+    return 'b-list__lst';
+  }
+
+  get Item() {
+    class Item extends super.Item {
+      get className() {
+        return 'b-list__item';
+      }
+
+      get template() {
+        return _.template(_item);
+      }
+    }
+    return Item;
+  }
+}
+
+function setTitle(model) {
+  if (!model) {
+    return false;
+  }
+
+  let $ = Backbone.$;
+  let name = model.get('name');
+  let timestamp = model.get('timestamp');
+  let date = model.get('date');
+  let $title = $('.schedule-title');
+
+  if (timestamp) {
+    date = _.template.formatDate('dd Mm, D', new Date(timestamp * 1000));
+  }
+
+  $title.text(`${name}. ${date}`);
+}
+
+let place, day;
 class Page extends Backbone.View {
   get collection() {
     return allSchedule;
   }
 
-  initialize({day, place = 0} = {}) {
-    this.dayID = day;
-    this.placeID = place;
+  initialize({dayID = 0, placeID = 0} = {}) {
+    day = dayID;
+    place = placeID;
 
     let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 
-    this.$list = this.$el.find('.list-block');
-    if (collection.length) {
-      this.addAll();
-    }
+    this.$list = this.$el.find('.b-list');
   }
 
   loadSuccess() {
@@ -27,27 +65,22 @@ class Page extends Backbone.View {
   }
 
   addAll() {
-    if (!this.dayID) {
-      console.log('не выбран день');
+    if (!day) {
+      logger('не выбран день');
     }
+    let model = days.findWhere({id: day});
+    setTitle(model);
 
     let schedule = this.collection.where({
-      dayID: this.dayID,
-      placeID: this.placeID
+      dayID: day,
+      placeID: place
     });
     if (!schedule.length) {
-      console.log('почему то пустое расписание');
+      logger('почему то пустое расписание');
       return this;
     }
-    schedule = schedule.map(model => {
-      let name = model.get('name') + ', ' + model.get('start');
-      return {
-        id: model.get('id'),
-        name: name
-      };
-    });
 
-    let view = new SimpleLink({
+    let view = new List({
       collection: new Schedule(schedule),
       href: function (model) {
         let id = model.get('id');
