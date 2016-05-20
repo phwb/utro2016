@@ -7,7 +7,8 @@ let Place = Backbone.Model.extend({
     type: 'html',
     text: '',
     timestamp: 0,
-    shiftID: 0
+    shiftID: 0,
+    sort: 10
   },
   syncMap: {
     ID: 'id',
@@ -17,7 +18,8 @@ let Place = Backbone.Model.extend({
     DETAIL_TEXT: 'text',
     TIMESTAMP_X: 'timestamp',
     SHIFT_ID: 'shiftID',
-    SHORT_NAME: 'shortName'
+    SHORT_NAME: 'shortName',
+    SORT: 'sort'
   },
   sync: Backbone.localforage.sync('place')
 });

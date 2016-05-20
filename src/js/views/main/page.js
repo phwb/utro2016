@@ -1,9 +1,13 @@
 'use strict';
 
+import {logger} from '../../app/helpers';
+// шаблоны
+import _item                          from './templates/page-list-item.jade';
+// коллецкии
 import config                         from '../../models/config';
 import {Places, default as allPlaces} from '../../collections/places';
+// UI
 import {SimpleLink}                   from '../ui/list';
-import _item                          from './templates/page-list-item.jade';
 // меню приложения
 import './menu';
 
@@ -43,6 +47,7 @@ class Page extends Backbone.View {
     let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
+    this.listenTo(collection, 'sync:error', this.loadError);
 
     // так же подписываемя на событие изменения конфига
     // --------------
@@ -79,23 +84,29 @@ class Page extends Backbone.View {
     this.addAll();
   }
 
+  loadError() {
+    this.hidePreloader();
+  }
+
   addAll() {
     let shiftID = config.get('shiftID');
     if (!shiftID) {
-      console.log('Нужно выбрать смену');
+      logger('Нужно выбрать смену');
       return this;
     }
 
     if (!this.collection.length) {
-      console.log('Площадки еще не загрузились');
+      logger('Площадки еще не загрузились');
       return this;
     }
 
     let places = this.collection.where({shiftID: shiftID}) || [];
     if (!places.length) {
-      console.log('какая-то исключительная ситуация, не найдены площадки для выбранной смены');
+      logger('какая-то исключительная ситуация, не найдены площадки для выбранной смены');
       return this;
     }
+
+    this.hidePreloader();
 
     // маленький хак, потом наверно придется переделать
     // для импорта массива в коллекцию
@@ -108,6 +119,11 @@ class Page extends Backbone.View {
     });
 
     this.$list.html( list.render().$el );
+  }
+
+  hidePreloader() {
+    // прячем прелоадер
+    this.$el.find('.preloader-block').remove();
   }
 
   render() {

@@ -45,7 +45,7 @@ export function assets() {
 
       // верстка
       gulp.src('./src/assets/js/svg.js').pipe(gulp.dest('./build/js/vendor'));
-      gulp.src('./src/assets/css/common.css').pipe(gulp.dest('./build/css'));
+      gulp.src('./src/assets/css/*.css').pipe(gulp.dest('./build/css'));
       gulp.src('./src/assets/img/**').pipe(gulp.dest('./build/img'));
       gulp.src('./src/assets/fonts/**').pipe(gulp.dest('./build/fonts'));
     });

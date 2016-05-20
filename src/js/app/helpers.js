@@ -98,7 +98,7 @@ export function initSync(callback = () => {}) {
     .then(() => new Sync(days))
     .then(() => new Sync(schedule))
     .then(() => callback())
-    // .then(() => new Sync(places))
+    .then(() => new Sync(places))
     // .then(() => new Sync(contacts))
     // .then(() => new Sync(experts))
     // .then(() => new Sync(news))

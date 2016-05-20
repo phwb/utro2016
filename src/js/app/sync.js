@@ -20,10 +20,11 @@ function getModelParams(obj, map = {}) {
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       let mapKey = map.hasOwnProperty(key) ? map[key] : key.toLocaleLowerCase();
+      let val = key === 'SORT' ? +obj[key] : obj[key];
       // если пришло значение, то установми его
       // иначе его по дефолту поставит Backbone
-      if (!!obj[key]) {
-        result[mapKey] = obj[key];
+      if (!!val) {
+        result[mapKey] = val;
       }
     }
   }
@@ -207,12 +208,16 @@ class Sync {
   }
 
   error() {
-    // тут можно как то залогировать ошибки
+    let e = arguments[0];
+    if (!(e instanceof Error)) {
+      e = new Error('Неизвестная ошибка');
+    }
+    this.collection.trigger('sync:error', e);
     logger.error('reject', arguments);
   }
 
   done() {
-    console.groupEnd();
+
   }
 
   _getKey(key) {
