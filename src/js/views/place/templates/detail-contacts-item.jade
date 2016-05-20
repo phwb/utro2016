@@ -1,0 +1,16 @@
+.b-contacts__item-inner
+  .b-contacts__photo
+    img.b-contacts__img(src!='<%= photo %>')
+  .b-contacts__body
+    .b-contacts__name <%= name %>
+    | <% if (obj.desc) { %>
+    .b-contacts__desc <%= obj.desc %>
+    | <% } %>
+    | <% if (phone) { %>
+    .b-contacts__phone
+      svg.b-contacts__phone-icon
+        use(xlink:href='#icon_at-phpne')
+      =' '
+      .b-contacts__phone-num <%= phone %>
+    | <% } %>
+

@@ -1,10 +1,36 @@
 'use strict';
 
-import {Simple} from '../ui/list';
+import _item                              from './templates/detail-contacts-item.jade';
+import {logger}                           from '../../app/helpers';
+import {Simple, Item}                     from '../ui/list';
 import {Contacts, default as allContacts} from '../../collections/contacts';
+
+class ListItem extends Item {
+  get className() {
+    return 'b-contacts__item';
+  }
+
+  get template() {
+    return _.template(_item);
+  }
+}
+
+class List extends Simple {
+  get className() {
+    return 'b-contacts__lst';
+  }
+
+  get Item() {
+    return ListItem;
+  }
+}
 
 let place = 0;
 class ContactList extends Backbone.View {
+  get className() {
+    return 'b-contacts';
+  }
+
   get collection() {
     return allContacts;
   }
@@ -27,14 +53,14 @@ class ContactList extends Backbone.View {
 
   addAll() {
     if (!place) {
-      console.log('нет ID площадки');
+      logger('нет ID площадки');
       return this;
     }
 
     let contacts = this.collection.where({placeID: place});
     let collection = new Contacts(contacts);
 
-    let view = new Simple({
+    let view = new List({
       collection: collection
     });
 

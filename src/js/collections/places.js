@@ -6,7 +6,7 @@ let Places = Backbone.Collection.extend({
   url: '/places',
   model: Place,
   comparator: function (model) {
-    return model.get('sort');
+    return model.get('timestamp');
   },
   sync: Backbone.localforage.sync('places')
 });

@@ -14,14 +14,21 @@ import news     from '../collections/news';
 import experts  from '../collections/experts';
 
 // + logger
+let log = true;
 export function logger() {
-  console.log.apply(console, arguments);
+  if (log) {
+    console.log.apply(console, arguments);
+  }
 }
 logger.info = function () {
-  console.info.apply(console, arguments);
+  if (log) {
+    console.info.apply(console, arguments);
+  }
 };
 logger.error = function () {
-  console.error.apply(console, arguments);
+  if (log) {
+    console.error.apply(console, arguments);
+  }
 };
 // - logger
 
@@ -99,7 +106,7 @@ export function initSync(callback = () => {}) {
     .then(() => new Sync(schedule))
     .then(() => callback())
     .then(() => new Sync(places))
-    // .then(() => new Sync(contacts))
+    .then(() => new Sync(contacts))
     // .then(() => new Sync(experts))
     // .then(() => new Sync(news))
     // .then(() => new Sync(utro24))

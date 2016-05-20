@@ -3,6 +3,7 @@ let Day = Backbone.Model.extend({
     id: 0,
     name: '',
     date: '',
+    timestamp: 0,
     shiftID: 0,
     sort: 10
   },
@@ -11,6 +12,7 @@ let Day = Backbone.Model.extend({
     NAME: 'name',
     DATE: 'date',
     SHIFT_ID: 'shiftID',
+    TIMESTAMP: 'timestamp',
     SORT: 'sort'
   },
   sync: Backbone.localforage.sync('day')

@@ -5,4 +5,10 @@ a.b-list__act.item-link(href!='<%= href %>')
         | День
         =' '
         .b-list__day-num <%= index %>
-      .b-list__day-date <%= date %>
+      .b-list__day-date
+        | <% if (timestamp) { %>
+        |   <%= _.template.formatDate('dd Mm yyyy', new Date(timestamp * 1000)) %>
+        | <% } else { %>
+        |   <%= date %>
+        | <% } %>
+

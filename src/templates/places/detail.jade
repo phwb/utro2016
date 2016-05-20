@@ -17,9 +17,13 @@
         a.tab-link.b-tab-nav__item(href='#place-schedule', class='active') Расписание
         a.tab-link.b-tab-nav__item(href='#place-contacts') Контакты
 .pages
-  .page.with-subnavbar(data-page='place-detail')
-    .tabs.b-tabs
-      .page-content.tab.b-tabs__item(id='place-desc'): .b-tabs__content.b-tabs__content_page-bg
-      .page-content.tab.b-tabs__item(id='place-schedule', class='active'): .b-tabs__content.b-tabs__content_nospace
-      .page-content.tab.b-tabs__item(id='place-contacts'): .list-block
+  .page.with-subnavbar.page-no-space(data-page='place-detail')
+    .page-content
+      .content-block
+        .content-block-inner
+          .tabs.b-tabs
+            .tab.b-tabs__item(id='place-desc'):                     .b-tabs__content.b-tabs__content_page-bg
+            .tab.b-tabs__item(id='place-schedule', class='active'): .b-tabs__content.b-tabs__content_nospace
+            .tab.b-tabs__item(id='place-contacts'):                 .b-tabs__content.b-tabs__content_nospace
 
+    include ../ui/toolbar.pug
