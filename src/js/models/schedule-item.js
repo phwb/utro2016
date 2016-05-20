@@ -10,7 +10,8 @@ let ScheduleItem = Backbone.Model.extend({
     location: 'Не указано',
     // зависимые поля, по ним строятся выборки
     placeID: 'empty',
-    dayID: 0
+    dayID: 0,
+    sort: 10
   },
   syncMap: {
     ID: 'id',
@@ -22,7 +23,8 @@ let ScheduleItem = Backbone.Model.extend({
     TIME_END: 'end',
     PLACE_ID: 'placeID',
     PLACE_STR: 'location',
-    DAY_ID: 'dayID'
+    DAY_ID: 'dayID',
+    SORT: 'sort'
   },
   sync: Backbone.localforage.sync('schedule-item')
 });

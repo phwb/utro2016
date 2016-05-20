@@ -1,7 +1,10 @@
 'use strict';
 
+// шаблоны
 import _item                      from './templates/detail-schedule-item.jade';
+// UI
 import {SimpleLink}               from '../ui/list';
+// коллекции
 import {Days, default as allDays} from '../../collections/days';
 import config                     from '../../models/config';
 
@@ -60,6 +63,13 @@ class ScheduleDays extends Backbone.View {
       console.log('какая-то исключительная ситуация, не найдены дни для выбранной смены');
       return this;
     }
+
+    days = days.map((model, index) => {
+      let obj = model.toJSON();
+      obj.index = index + 1;
+
+      return obj;
+    });
 
     let list = new List({
       collection: new Days(days),

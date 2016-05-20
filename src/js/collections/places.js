@@ -1,3 +1,5 @@
+'use strict';
+
 import Place from '../models/place';
 
 let Places = Backbone.Collection.extend({

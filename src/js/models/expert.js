@@ -7,7 +7,8 @@ let Expert = Backbone.Model.extend({
     timestamp: 0,
     photo: '',
     // зависимое поле
-    placeID: 0
+    placeID: 0,
+    sort: 10
   },
   syncMap: {
     ID: 'id',
@@ -16,7 +17,8 @@ let Expert = Backbone.Model.extend({
     PREVIEW_TEXT: 'text',
     TIMESTAMP_X: 'timestamp',
     PLACE_ID: 'placeID',
-    PHOTO: 'photo'
+    PHOTO: 'photo',
+    SORT: 'sort'
   },
   sync: Backbone.localforage.sync('expert')
 });

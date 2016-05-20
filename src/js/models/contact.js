@@ -6,7 +6,8 @@ let Contact = Backbone.Model.extend({
     phone: '',
     email: '',
     placeID: 0,
-    photo: ''
+    photo: '',
+    sort: 10
   },
   syncMap: {
     ID: 'id',
@@ -15,7 +16,8 @@ let Contact = Backbone.Model.extend({
     PHONE: 'phone',
     EMAIL: 'email',
     PLACE_ID: 'placeID',
-    PHOTO: 'photo'
+    PHOTO: 'photo',
+    SORT: 'sort'
   },
   sync: Backbone.localforage.sync('contact')
 });

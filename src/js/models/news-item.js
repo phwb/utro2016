@@ -10,7 +10,8 @@ let NewsItem = Backbone.Model.extend({
     text: '',
     type: 'text',
     previewPicture: '',
-    detailPicture: ''
+    detailPicture: '',
+    sort: 10
   },
   syncMap: {
     NAME: 'name',
@@ -20,7 +21,8 @@ let NewsItem = Backbone.Model.extend({
     DETAIL_TEXT: 'text',
     DETAIL_TEXT_TYPE: 'type',
     PREVIEW_PICTURE: 'previewPicture',
-    DETAIL_PICTURE: 'detailPicture'
+    DETAIL_PICTURE: 'detailPicture',
+    SORT: 'sort'
   },
   sync: Backbone.localforage.sync('news-item')
 });
