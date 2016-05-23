@@ -1,0 +1,6 @@
+a.b-news__item.item-link(href!='<%= href %>')
+  .b-news__photo
+    img.b-news__img(src!='<%= previewPicture %>', width='80', height='80')
+  .b-news__body
+    .b-news__title <%= name %>
+    .b-news__date <%= _.template.formatDate('dd Mm yyyy', new Date(date * 1000)) %>

@@ -1,24 +1,13 @@
 'use strict';
 
+import _content from './templates/detail-content.jade';
 import news from '../../collections/news';
 
-let _detail = `
-<div class="content-block">
-  <p><%= name %></p>
-</div>
-<div class="card ks-card-header-pic">
-  <div style="background-image: url(<%= previewPicture %>)" valign="bottom" class="card-header color-white no-border"></div>
-  <div class="card-content">
-    <div class="card-content-inner">
-      <p class="color-gray"><%= _.template.formatDate('dd Mm yyyy', new Date(date * 1000)) %></p>
-      <p><%= text %></p>
-    </div>
-  </div>
-</div>
-`;
-let template = _.template(_detail);
-
 class Page extends Backbone.View {
+  get template() {
+    return _.template(_content);
+  }
+
   initialize({id} = {}) {
     if (!id) {
       throw new Error('чтобы посмотреть новость, нужно передать айдишник');
@@ -29,7 +18,7 @@ class Page extends Backbone.View {
       throw new Error(`на нашли новость с таким айдишником ${id}`);
     }
 
-    this.$content = this.$el.find('.page-content');
+    this.$content = this.$el.find('.content-block-inner');
     this.model = model;
   }
 
@@ -37,7 +26,7 @@ class Page extends Backbone.View {
     if (!this.model) {
       return this;
     }
-    this.$content.html( template( this.model.toJSON() ) );
+    this.$content.html( this.template( this.model.toJSON() ) );
     return this;
   }
 }

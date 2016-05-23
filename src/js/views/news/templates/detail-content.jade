@@ -1,0 +1,11 @@
+| <% if (detailPicture) { %>
+img(src!='<%= detailPicture %>', width='390', height='640')
+| <% } %>
+.b-section
+  .b-date <%= _.template.formatDate('dd Mm yyyy', new Date(date * 1000)) %>
+  h1 <%= name %>
+  | <% if (type === 'html') { %>
+  |   <%= text %>
+  | <% } else { %>
+  |   <%- text %>
+  | <% } %>

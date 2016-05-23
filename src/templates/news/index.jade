@@ -1,15 +1,22 @@
 .navbar
   .navbar-inner
     .left
-      a.link.back.icon-only(href='#'): i.icon.icon-back
+      a.back.link.b-back(href='#'): svg.b-back__icon: use(xlink:href='#icon_back')
     .center.sliding Новости
     .right
-      a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
+      a.link.open-panel.b-nav-button(href='#')
+        .b-nav-button__body
+          .b-nav-button__item.b-nav-button__item_top
+          .b-nav-button__item.b-nav-button__item_center
+          .b-nav-button__item.b-nav-button__item_bottom
 .pages
-  .page(data-page='news-list')
+  .page.page-no-space(data-page='news-list')
     .page-content.pull-to-refresh-content(data-ptr-distance='55')
       .pull-to-refresh-layer
         .preloader
         .pull-to-refresh-arrow
-      .list-block.media-list
+      .content-block
+        .content-block-inner
+
+    include ../ui/toolbar.pug
 

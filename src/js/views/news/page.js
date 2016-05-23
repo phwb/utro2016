@@ -2,27 +2,27 @@
 
 import {SimpleLink} from '../ui/list';
 // коллецкия
-import news from '../../collections/news';
+import news         from '../../collections/news';
+// шаблон
+import _item        from './templates/page-list-item.jade';
 
-let _link = `
-<a href="<%= href %>" class="item-link item-content">
-  <div class="item-media"><img src="<%= previewPicture %>" width="80"></div>
-  <div class="item-inner">
-    <div class="item-title-row">
-      <div class="item-title"><%= name %></div>
-    </div>
-    <div class="item-subtitle"><%= _.template.formatDate('dd Mm yyyy', new Date(date * 1000)) %></div>
-    <% if (text) { %>
-      <div class="item-text"><%- text %></div>
-    <% } %>
-  </div>
-</a>
-`;
 class List extends SimpleLink {
+  get tagName() {
+    return 'div';
+  }
+
+  get className() {
+    return 'b-news';
+  }
+
   get Item() {
     class Item extends super.Item {
+      get tagName() {
+        return 'div';
+      }
+
       get template() {
-        return _.template(_link);
+        return _.template(_item);
       }
     }
     return Item;
@@ -36,16 +36,12 @@ class Page extends Backbone.View {
 
   initialize() {
     this.$pull = this.$el.find('.pull-to-refresh-content');
-    console.log(this.$pull);
 
     let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 
-    this.$list = this.$el.find('.list-block');
-    if (collection.length) {
-      this.addAll();
-    }
+    this.$list = this.$el.find('.content-block-inner');
   }
 
   // события pull to refresh
