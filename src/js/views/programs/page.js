@@ -1,7 +1,7 @@
 'use strict';
 
-import Tabs from './tabs';
-import Subnavbar from './subnavbar';
+import Tabs       from './tabs';
+import Subnavbar  from './subnavbar';
 
 class Page extends Backbone.View {
   initialize() {

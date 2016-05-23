@@ -1,13 +1,22 @@
 .navbar
   .navbar-inner
     .left
-      a.link.back.icon-only(href='#'): i.icon.icon-back
+      a.back.link.b-back(href='#'): svg.b-back__icon: use(xlink:href='#icon_back')
     .center.sliding Программа
     .right
-      a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
-    .subnavbar
-      #days.buttons-row
+      a.link.open-panel.b-nav-button(href='#')
+        .b-nav-button__body
+          .b-nav-button__item.b-nav-button__item_top
+          .b-nav-button__item.b-nav-button__item_center
+          .b-nav-button__item.b-nav-button__item_bottom
+    .subnavbar.subnavbar-no-space
+      #days.b-tab-nav.b-tab-nav_content-align_left
 .pages
-  .page.with-subnavbar(data-page='programs')
-    .tabs
+  .page.page-no-space.with-subnavbar(data-page='programs')
+    .page-content
+      .content-block
+        .content-block-inner
+          .tabs.b-tabs
+
+    include ../ui/toolbar.pug
 

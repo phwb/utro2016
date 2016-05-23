@@ -1,7 +1,8 @@
 'use strict';
 
-import config from '../../models/config';
-import allDays from '../../collections/days';
+import _item    from './templates/subnavbar-item.jade';
+import config   from '../../models/config';
+import allDays  from '../../collections/days';
 
 const elemID = '#days';
 
@@ -11,20 +12,25 @@ class TabItem extends Backbone.View {
   }
 
   get className() {
-    return 'button tab-link';
+    return 'tab-link b-tab-nav__item';
   }
 
   get attributes() {
     return {
-      href: '#'
+      href: '#',
+      style: 'white-space: nowrap; padding: 0 15px;'
     };
+  }
+
+  get template() {
+    return _.template(_item);
   }
 
   render(active) {
     let params = this.model.toJSON();
 
     this.$el
-      .text(params.name)
+      .html( this.template( params ) )
       .attr('href', `#day-${params.id}`);
 
     if (active) {
