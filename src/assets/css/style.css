@@ -21,3 +21,6 @@
   height: 1px;
   background: #d6d6d6;
 }
+.b-event__time {
+  white-space: nowrap;
+}

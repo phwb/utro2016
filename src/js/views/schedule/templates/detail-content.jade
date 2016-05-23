@@ -1,0 +1,17 @@
+.b-event
+  .b-event__header
+    .b-event__properties
+      .b-event__time <%= start %> – <%= end %>
+      .b-event__location <%= location %>
+    .b-event__title <%= name %>
+  .b-event__body
+    | <% if (type === 'text') { %>
+    |   <%- text %>
+    | <% } else { %>
+    |   <%= text %>
+    | <% } %>
+.b-section.b-txt-centered
+  a.b-button.b-button_color_cancel(href='#')
+    svg.b-button__icon.b-button__icon_star: use(xlink:href='#icon_star')
+    =' '
+    | Убрать из моего расписания

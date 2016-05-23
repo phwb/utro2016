@@ -4,8 +4,8 @@ import {logger} from './helpers';
 
 let ajax = Backbone.ajax;
 let defaults = {
-  // domain: 'http://api.utro2016.loc'
-  domain: 'http://192.168.1.46/local/api'
+  domain: 'http://api.utro2016.loc'
+  // domain: 'http://192.168.1.46/local/api'
 };
 
 /**

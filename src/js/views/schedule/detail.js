@@ -1,20 +1,44 @@
 'use strict';
 
+// шаблон детальной страницы
+import _detail  from './templates/detail-content.jade';
+// коллекция
 import schedule from '../../collections/schedule';
+import days     from '../../collections/days';
 
-let detail = `
-<div class="content-block-title">Название</div>
-<div class="content-block">
-  <div class="content-block-inner"><%= name %></div>
-</div>
-<div class="content-block-title">Начало</div>
-<div class="content-block">
-  <div class="content-block-inner"><%= start %></div>
-</div>
-`;
-let template = _.template(detail);
+function setTitle(model) {
+  if (!model) {
+    return false;
+  }
+
+  let $ = Backbone.$;
+  let name = model.get('name');
+  let timestamp = model.get('timestamp');
+  let date = model.get('date');
+  let $title = $('.schedule-detail-title');
+
+  if (timestamp) {
+    date = _.template.formatDate('dd Mm, D', new Date(timestamp * 1000));
+  }
+
+  $title.text(`${name}. ${date}`);
+}
 
 class Page extends Backbone.View {
+  get template() {
+    return _.template(_detail);
+  }
+
+  get events() {
+    return {
+      'click .b-button': 'toggleMySchedule'
+    };
+  }
+
+  toggleMySchedule() {
+    console.log('click on the button');
+  }
+
   initialize({id} = {}) {
     if (!id) {
       throw new Error('чтобы посмотреть расписание, нужно передать айдишник');
@@ -25,7 +49,12 @@ class Page extends Backbone.View {
       throw new Error(`на нашли расписание с таким айдишником ${id}`);
     }
 
-    this.$content = this.$el.find('.page-content');
+    let day = days.get( model.get('dayID') );
+    if (day) {
+      setTitle(day);
+    }
+
+    this.$content = this.$el.find('.content-block-inner');
     this.model = model;
   }
 
@@ -33,7 +62,7 @@ class Page extends Backbone.View {
     if (!this.model) {
       return this;
     }
-    this.$content.html( template( this.model.toJSON() ) );
+    this.$content.html( this.template( this.model.toJSON() ) );
     return this;
   }
 }

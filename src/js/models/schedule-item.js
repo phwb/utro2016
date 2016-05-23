@@ -5,8 +5,8 @@ let ScheduleItem = Backbone.Model.extend({
     type: 'html',
     text: '',
     timestamp: 0,
-    start: '09:00',
-    end: '18:00',
+    start: '00:00',
+    end: '00:00',
     location: 'Не указано',
     // зависимые поля, по ним строятся выборки
     placeID: 'empty',
