@@ -1,0 +1,9 @@
+a.b-list__act.item-link(href!='<%= href %>')
+  .b-list__img
+    .b-list__circle
+      svg.b-list__icon(class!='b-list__icon_<%= code %>'): use(xlink:href!='#icon_<%= code %>')
+  .b-list__h
+    .b-list__body
+      | Урал
+      =' '
+      span.b-list__b <%= shortName %>
