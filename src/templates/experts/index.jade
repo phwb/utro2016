@@ -1,19 +1,29 @@
 .navbar
   .navbar-inner
     .left
-      a.link.back.icon-only(href='#'): i.icon.icon-back
+      a.back.link.b-back(href='#'): svg.b-back__icon: use(xlink:href='#icon_back')
     .center.sliding Эксперты
     .right
-      a.link.icon-only.open-panel(href='#'): i.icon.icon-bars
-    .subnavbar
-      .buttons-row
-        a.button.tab-link.active(href='#experts-federal') Федеральные эксперты
-        a.button.tab-link(href='#experts-places') Эксперты площадок
+      a.link.open-panel.b-nav-button(href='#')
+        .b-nav-button__body
+          .b-nav-button__item.b-nav-button__item_top
+          .b-nav-button__item.b-nav-button__item_center
+          .b-nav-button__item.b-nav-button__item_bottom
+    .subnavbar.subnavbar-no-space
+      .b-tab-nav
+        a.b-tab-nav__item.tab-link(href='#experts-federal', class='active') Федеральные эксперты
+        a.b-tab-nav__item.tab-link(href='#experts-places') Эксперты площадок
 .pages
-  .page.with-subnavbar(data-page='expert-list')
-    .tabs
-      .page-content.tab.active(id='experts-federal')
-        .list-block
-      .page-content.tab(id='experts-places')
-        .list-block
+  .page.page-no-space.with-subnavbar(data-page='expert-list')
+    .page-content
+      .content-block
+        .content-block-inner
+          .tabs.b-tabs
+            .tab.b-tabs__item(id='experts-federal', class='active')
+              .b-tabs__content.b-tabs__content_nospace
+                .b-list.b-list_layout_cards(style='margin-bottom: 0')
+            .tab.b-tabs__item(id='experts-places')
+              .b-tabs__content.b-tabs__content_nospace
+                .b-list.b-list_layout_cards(style='margin-bottom: 0')
 
+    include ../ui/toolbar.pug

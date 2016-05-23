@@ -4,7 +4,7 @@
 let NewsItem = Backbone.Model.extend({
   defaults: {
     id: 0,
-    name: '',
+    name: 'Без имени',
     date: 0,
     timestamp: 0,
     text: '',

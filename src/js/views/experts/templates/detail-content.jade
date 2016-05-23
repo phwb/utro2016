@@ -1,0 +1,18 @@
+.b-person
+  img.b-person__photo.b-person__photo_darken(src!='<%= photo %>', height='551', width='640')
+  .b-person__h <%= name %>
+  <% if (obj.placeName) { %>
+  .b-person__legend
+    span.b-person__legend-h Площадка:
+    =' '
+    a.b-person__legend-body.item-link(href!='<%= placeHref %>')
+      | урал
+      =' '
+      span.b-person__imp <%= placeName %>
+  <% } %>
+  .b-person__desc
+    | <% if (type === 'html') { %>
+    |   <%= text %>
+    | <% } else { %>
+    |   <%- text %>
+    | <% } %>

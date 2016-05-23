@@ -1,24 +1,24 @@
 'use strict';
 
-import {SimpleLink} from '../ui/list';
+import {logger}                       from '../../app/helpers';
+import _item                          from './templates/page-list-item.jade';
+import {SimpleLink}                   from '../ui/list';
 // коллецкия
-import {Experts, default as experts} from '../../collections/experts';
+import {Experts, default as experts}  from '../../collections/experts';
+import places                         from '../../collections/places';
 
-let _newsLink = `
-<a href="<%= href %>" class="item-link item-content">
-  <div class="item-media"><img src="<%= photo %>" width="80"></div>
-  <div class="item-inner">
-    <div class="item-title-row">
-      <div class="item-title"><%= name %></div>
-    </div>
-  </div>
-</a>
-`;
 class List extends SimpleLink {
+  get className() {
+    return 'b-list__lst';
+  }
   get Item() {
     class Item extends super.Item {
+      get className() {
+        return 'b-list__item';
+      }
+
       get template() {
-        return _.template(_newsLink);
+        return _.template(_item);
       }
     }
     return Item;
@@ -35,8 +35,8 @@ class Page extends Backbone.View {
     this.listenTo(collection, 'reset', this.addAll);
     this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 
-    this.$federal = this.$el.find('#experts-federal .list-block');
-    this.$places = this.$el.find('#experts-places .list-block');
+    this.$federal = this.$el.find('#experts-federal .b-list');
+    this.$places = this.$el.find('#experts-places .b-list');
   }
 
   loadSuccess() {
@@ -50,9 +50,9 @@ class Page extends Backbone.View {
   }
 
   addFederal() {
-    let experts = this.collection.where({placeID: 'empty'});
+    let experts = this.collection.where({placeID: 0});
     if (!experts.length) {
-      console.log('не нашли ни одного федерального эксперта');
+      logger('не нашли ни одного федерального эксперта');
       return this;
     }
 
@@ -70,8 +70,16 @@ class Page extends Backbone.View {
 
   addPlaces() {
     let experts = this.collection.filter(model => {
-      let placeID = model.get('placeID');
-      return placeID !== 'empty';
+      return model.get('placeID') !== 0;
+    });
+    if (!experts.length) {
+      logger('не нашли ни одного эксперта площадки');
+      return this;
+    }
+    experts = experts.map(model => {
+      let params = model.toJSON();
+      params.placeName = places.get(params.placeID).get('shortName');
+      return params;
     });
 
     let view = new List({

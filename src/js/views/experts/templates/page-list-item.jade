@@ -1,0 +1,10 @@
+a.b-list__act.item-link(href!='<%= href %>')
+  .b-list__img
+    .b-list__circle
+      img.b-list__avatar(src!='<%= photo %>', height='80', width='80')
+  .b-list__h
+    .b-list__body
+      <%= name.trim() %>
+      | <% if (obj.placeName) { %>
+      .b-list__area-h Урал <%= placeName %>
+      | <% } %>

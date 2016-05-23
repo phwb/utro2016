@@ -1,23 +1,20 @@
 'use strict';
 
-import experts from '../../collections/experts';
+import _content from './templates/detail-content.jade';
+import experts  from '../../collections/experts';
+import places   from '../../collections/places';
 
-let _detail = `
-<div class="content-block">
-  <p><%= name %></p>
-</div>
-<div class="card ks-card-header-pic">
-  <div style="background-image: url(<%= photo %>)" valign="bottom" class="card-header color-white no-border"></div>
-  <div class="card-content">
-    <div class="card-content-inner">
-      <p><%= text %></p>
-    </div>
-  </div>
-</div>
-`;
-let template = _.template(_detail);
+function setTitle(federal = false) {
+  let $ = Backbone.$;
+  let $title = $('.expert-detail-title');
+  $title.text(federal ? 'Федеральный эксперт' : 'Эксперт площадки');
+}
 
 class Page extends Backbone.View {
+  get template() {
+    return _.template(_content);
+  }
+
   initialize({id} = {}) {
     if (!id) {
       throw new Error('чтобы посмотреть эксперта, нужно передать айдишник');
@@ -28,7 +25,7 @@ class Page extends Backbone.View {
       throw new Error(`на нашли эксперта с таким айдишником ${id}`);
     }
 
-    this.$content = this.$el.find('.page-content');
+    this.$content = this.$el.find('.content-block-inner');
     this.model = model;
   }
 
@@ -36,7 +33,17 @@ class Page extends Backbone.View {
     if (!this.model) {
       return this;
     }
-    this.$content.html( template( this.model.toJSON() ) );
+
+    let params = this.model.toJSON();
+
+    if (params.placeID) {
+      let place = places.get(params.placeID);
+      params.placeName = place.get('shortName');
+      params.placeHref = `places/detail.html?id=${place.get('id')}`;
+    }
+
+    setTitle(!params.placeID);
+    this.$content.html( this.template( params ) );
     return this;
   }
 }

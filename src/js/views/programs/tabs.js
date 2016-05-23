@@ -5,8 +5,6 @@ import config from '../../models/config';
 import allDays from '../../collections/days';
 import {Schedule ,default as schedule} from '../../collections/schedule';
 
-console.log(schedule);
-
 let $ = Backbone.$;
 
 
