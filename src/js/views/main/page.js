@@ -38,6 +38,7 @@ class Page extends Backbone.View {
   initialize() {
     this.$list = this.$el.find('.b-main-teasers');
     this.$pull = this.$el.find('.pull-to-refresh-content');
+    this.$empty = this.$el.find('.empty-page');
 
     // событие происходят в функции initSync()
     // --------------
@@ -46,8 +47,15 @@ class Page extends Backbone.View {
     // для этого как раз и есть событие «sync:ajax.end»
     let collection = this.collection;
     this.listenTo(collection, 'reset', this.addAll);
-    this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
-    this.listenTo(collection, 'sync:error', this.loadError);
+    /*
+     * TODO ТАК СДЕЛАТЬ НА КАЖДОЙ СТРАНИЦЕ:
+     *
+     * TODO переделать до обеда - подписаться на событие ajax.{start|end} и показывать скрывать прелоадер
+     * TODO по умолчанию сделать страницу "Пустой список"
+     */
+    this.listenTo(collection, 'sync:ajax.start', this.loadStart);
+    this.listenTo(collection, 'sync:ajax.end',   this.loadSuccess);
+    this.listenTo(collection, 'sync:error',      this.loadError);
 
     // так же подписываемя на событие изменения конфига
     // --------------
@@ -77,15 +85,21 @@ class Page extends Backbone.View {
     this.addAll();
   }
 
+  loadStart() {
+    this.$empty.hide();
+    this.$pull.addClass('refreshing');
+  }
+
   /**
    * функция аналогична addAll, добавлена исключительно для отладки событий
    */
   loadSuccess() {
+    this.$pull.removeClass('refreshing');
     this.addAll();
   }
 
   loadError() {
-    this.hidePreloader();
+
   }
 
   addAll() {
@@ -106,8 +120,7 @@ class Page extends Backbone.View {
       return this;
     }
 
-    this.hidePreloader();
-
+    this.$empty.hide();
     // маленький хак, потом наверно придется переделать
     // для импорта массива в коллекцию
     let list = new List({
@@ -119,11 +132,6 @@ class Page extends Backbone.View {
     });
 
     this.$list.html( list.render().$el );
-  }
-
-  hidePreloader() {
-    // прячем прелоадер
-    this.$el.find('.preloader-block').remove();
   }
 
   render() {

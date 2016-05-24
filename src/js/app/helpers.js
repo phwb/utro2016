@@ -98,21 +98,20 @@ function fetchConfig() {
 export function initSync(callback = () => {}) {
   let sync = Promise.resolve();
   sync
-    .then(() => logger('sync:load-config'))
     .then(fetchConfig)
-    .then(() => logger('sync:start'))
+    .then(() => console.time('Время загрузки приложения'))
     .then(() => new Sync(shifts))
     .then(() => new Sync(days))
-    .then(() => new Sync(schedule))
     .then(() => callback())
     .then(() => new Sync(places))
+    .then(() => new Sync(schedule))
     .then(() => new Sync(contacts))
     .then(() => new Sync(experts))
     .then(() => new Sync(news))
     // .then(() => new Sync(utro24))
     // .then(() => new Sync(forum))
     // .then(() => new Sync(polls))
-    .then(() => logger('sync:end'))
+    .then(() => console.timeEnd('Время загрузки приложения'))
     .catch(e => logger(e));
   return sync;
 }

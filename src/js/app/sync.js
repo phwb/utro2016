@@ -46,7 +46,7 @@ class Sync {
   }
 
   fetch() {
-    logger(`sync:fetch ${this.collection.url}`);
+    console.group(`sync:fetch ${this.collection.url}`);
     let promise =  new Promise((resolve, reject) => {
       this.collection.fetch({
         reset: true,
@@ -67,12 +67,14 @@ class Sync {
       // если коллекция после получения имеет какие то данные
       // то просто передадим управление дальше
       if (collection.length > 0) {
+        console.log('fetch from DB');
         collection.trigger('sync:db', collection);
         return resolve();
       }
 
       // если коллекция пустая, значит это скорее всего первый запуск
       // и надо получить данный с сервера
+      console.time(`ajax`);
       collection.trigger('sync:ajax.start');
 
       let url = this._getUrl();
@@ -105,6 +107,7 @@ class Sync {
     let timestamp = data.LAST_DATE_UPDATE || false;
     let collection = this.collection;
 
+    console.timeEnd(`ajax`);
     if (!items.length) {
       reject(new Error(`Пустой массив ITEMS ${collection.url}`));
     }
@@ -112,20 +115,39 @@ class Sync {
     // ищем карту соответствия полей с сервера полям из модели
     // если карта пустая, то просто создадим модель с полями
     // пришедшими с сервера в нижнем регистре
+    console.time(`parse`);
     let syncMap = collection.model.prototype.syncMap || {};
+    let len = items.length;
+
+    // setTimeout(() => {
 
     items.forEach(item => {
       let param = getModelParams(item, syncMap);
-      collection.create(param, {silent: true});
+      collection.create(param, {
+        silent: true,
+        // функция success выполняется каждый раз когда успешно сохраняется модель в БД,
+        // но из того что "Расписание" слишком большое, сохранение проходит долго ~23 секунды
+        // поэтому функцию resolve мы вызываем только тогда, когда все модели данной коллекции сохранены
+        success: function () {
+          len -= 1;
+          if (len < 1) {
+            // по завершению записи колллекции в БД, просигналим событием об этом
+            collection.trigger('sync:ajax.end', collection);
+            // передадим управления дальше
+            resolve({
+              timestamp: timestamp,
+              method: 'set'
+            });
+            console.timeEnd(`parse`);
+            return true;
+          }
+        },
+        // ну и на всякий случай вызываем reject в случае ошибки
+        error: reject.bind(this)
+      });
     });
 
-    // по завершению записи колллекции в БД, просигналим событием об этом
-    collection.trigger('sync:ajax.end', collection, {type: 'sync:ajax.end'});
-    // передадим управления дальше
-    resolve({
-      timestamp: timestamp,
-      method: 'set'
-    });
+    // }, 5000);
   }
 
   ajaxError(reject) {
@@ -156,7 +178,6 @@ class Sync {
         lf.getItem(key)
           .then(value => {
             if (value) {
-              logger(`обновление ${this.collection.url}, timestamp = ${value}`);
               let params = {
                 url: url,
                 data: {
@@ -187,7 +208,6 @@ class Sync {
     let timestamp = data.LAST_DATE_UPDATE || false;
 
     if (!items.length) {
-      logger(`обновления ${this.collection.url} не требуются`);
       return this;
     }
 
@@ -214,10 +234,11 @@ class Sync {
     }
     this.collection.trigger('sync:error', e);
     logger.error('reject', arguments);
+    console.groupEnd();
   }
 
   done() {
-
+    console.groupEnd();
   }
 
   _getKey(key) {
