@@ -2,7 +2,7 @@
   .navbar-inner
     .left
       a.back.link.b-back(href='#'): svg.b-back__icon: use(xlink:href='#icon_back')
-    .center.sliding.schedule-title Опросы
+    .center.sliding.poll-title Опросы
     .right
       a.link.open-panel.b-nav-button(href='#')
         .b-nav-button__body
@@ -14,6 +14,7 @@
     .page-content
       .content-block
         .content-block-inner
+      .empty-page(data-text='Вопросов нет')
 
     include ../ui/toolbar.pug
 

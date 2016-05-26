@@ -1,0 +1,7 @@
+- var id = 'answer_<%= questionID %>_<%= id %>';
+- var name = 'vote_<%= type %>_<%= questionID %><%= type === "checkbox" ? "[]" : "" %>';
+input.b-cr-list__input(type!='<%= type %>', name!=name, id!=id, value!='<%= id %>')
+label.b-cr-list__label(for!=id)
+  span.b-cr-list__txt <%= name %>
+  svg.b-cr-list__icon
+    use(xlink:href='#icon_check')

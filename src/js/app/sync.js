@@ -306,22 +306,29 @@ export function getPollFields(model) {
     };
     ajax(params)
       .done(data => {
-        let questions = data.QUESTIONS;
+        let questions = data.QUESTIONS || [];
         if (!questions.length) {
           reject(new Error('Нет вопросов'));
         }
 
         let answerMap = {
           ID: 'id',
-          TEXT: 'text',
+          TEXT: 'name',
           TEXT_TYPE: 'textType',
           FIELD_TYPE: 'type',
           PERCENT: 'percent'
         };
         let params = questions.map(question => {
-          let answers = question.ANSWERS.map(answer => {
-            return getModelParams(answer, answerMap);
-          });
+          let answers = question.ANSWERS || [];
+
+          if (answers.length) {
+            answers = answers.map(answer => {
+              let map = getModelParams(answer, answerMap);
+              map.questionID = question.ID;
+              return map;
+            });
+          }
+
           let result = getModelParams(question);
           result.answers = answers;
           return result;
