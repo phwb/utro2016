@@ -1,3 +1,5 @@
+'use strict';
+
 let ScheduleItem = Backbone.Model.extend({
   defaults: {
     id: 0,
@@ -11,7 +13,16 @@ let ScheduleItem = Backbone.Model.extend({
     // зависимые поля, по ним строятся выборки
     placeID: '0',
     dayID: 0,
-    sort: 10
+    sort: 10,
+    // флаг добавления в "Мое расписание"
+    my: false
+  },
+  toggle: function() {
+    let my = !this.get('my');
+    this.save({
+      my: my
+    });
+    return my;
   },
   syncMap: {
     ID: 'id',

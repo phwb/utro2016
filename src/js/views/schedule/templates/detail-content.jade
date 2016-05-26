@@ -18,7 +18,7 @@
     | <% } %>
   | <% } %>
 .b-section.b-txt-centered
-  a.b-button.b-button_color_cancel(href='#')
+  a.b-button.b-button_color_add(href='#', class!='<%= my ? "b-button_color_cancel" : "" %>')
     svg.b-button__icon.b-button__icon_star: use(xlink:href='#icon_star')
     =' '
-    | Убрать из моего расписания
+    span <%= my ? "Убрать из моего расписания" : "Добавить в мое расписание" %>

@@ -2,9 +2,10 @@
 
 import Page from '../views/cabinet/page';
 
-module.exports = function (container) {
+module.exports = function (container, {tab = ''} = {}) {
   let page = new Page({
-    el: container
+    el: container,
+    tab: tab
   });
   page.render();
 

@@ -11,25 +11,42 @@
           .b-nav-button__item.b-nav-button__item_bottom
     .subnavbar.subnavbar-no-space
       .b-tab-nav.b-tab-nav_color_main
-        a.b-tab-nav__item.tab-link(href='#cabinet-schedule'):                 .b-tab-nav__text Мое расписание
-        a.b-tab-nav__item.tab-link(href='#cabinet-settings', class='active'): .b-tab-nav__text Настройки
+        a.b-tab-nav__item.tab-link(href='#cabinet-schedule', id='link-schedule')
+          .b-tab-nav__text Мое расписание
+        a.b-tab-nav__item.tab-link(href='#cabinet-settings', id='link-settings' class='active')
+          .b-tab-nav__text Настройки
 .pages
   .page.page-no-space.with-subnavbar(data-page='cabinet')
     .page-content
-      .content-block
-        .content-block-inner
-          .tabs.b-tabs
-            .b-tabs__item.tab(id='cabinet-schedule')
-              .list-block
-            .b-tabs__item.tab(id='cabinet-settings', class='active')
-              .b-form-list.list-block(style='margin-top: 0')
-                label.b-form-list__item
-                  .b-form-list__title Уведомлять о событиях в моем расписании
-                  .b-form-list__element(id='notify-select')
+      .tabs.b-tabs
+        .b-tabs__item.tab(id='cabinet-schedule')
+          .b-list
+        .b-tabs__item.tab(id='cabinet-settings', class='active')
+          .b-form-list
+            //label.b-form-list__item.b-form-list__item_select
+              .b-form-list__select-body
+                .b-form-list__title Уведомлять о событиях в моем расписании
+                .b-form-list__element
+                  .b-form-list__select-val(id='time-select')
                     select
-                      option За 20 мин
-                      option За 30 мин
-                      option За 40 мин
-                label.b-form-list__item
-                  .b-form-list__title Выбор смены
-                  .b-form-list__element(id='shift-select')
+                      option(value='За 5 мин') За 5 мин
+                      option(value='За 10 мин') За 10 мин
+                      option(value='За 15 мин') За 15 мин
+                      option(value='За 20 мин') За 20 мин
+                      option(value='За 25 мин') За 25 мин
+                      option(value='За 30 мин') За 30 мин
+                      option(value='За 35 мин') За 35 мин
+                      option(value='За 40 мин') За 40 мин
+                      option(value='За 45 мин') За 45 мин
+                      option(value='За 50 мин') За 50 мин
+                      option(value='За 50 мин') За 50 мин
+                      option(value='За 60 мин') За 60 мин
+                  svg.b-form-list__picker-icon
+                    use(xlink:href='#icon_pick')
+            label.b-form-list__item.b-form-list__item_select
+              .b-form-list__select-body
+                .b-form-list__title Выбор смены
+                .b-form-list__element
+                  .b-form-list__select-val(id='shift-select')
+                  svg.b-form-list__picker-icon
+                    use(xlink:href='#icon_pick')
