@@ -1,7 +1,9 @@
 a.b-list__act.item-link(href!='<%= href %>')
-  .b-list__h.b-list__h_day
-    .b-list__body.b-list__body_arrow-right
-      .b-list__day-h.b-list__day-h_size_sm <%= name %>
-      svg.b-list__arrow-right
-        use(xlink:href='#icon_go-to-arrow')
-
+  .b-list__img
+    .b-list__circle
+      svg.b-list__icon(class!='b-list__icon_vote'): use(xlink:href!='#icon_<%= voted ? "voted" : "vote" %>')
+  .b-list__h
+    .b-list__body
+      | Опрос
+      =' '
+      span.b-list__b <%= name %>
