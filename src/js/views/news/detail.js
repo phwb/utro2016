@@ -1,7 +1,7 @@
 'use strict';
 
 import _content from './templates/detail-content.jade';
-import news from '../../collections/news';
+import news     from '../../collections/news';
 
 class Page extends Backbone.View {
   get template() {

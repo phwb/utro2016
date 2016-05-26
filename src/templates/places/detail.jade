@@ -17,11 +17,15 @@
 .pages
   .page.with-subnavbar.page-no-space(data-page='place-detail')
     .page-content
-      .content-block
-        .content-block-inner
-          .tabs.b-tabs
-            .tab.b-tabs__item(id='place-desc'):                     .b-tabs__content.b-tabs__content_page-bg
-            .tab.b-tabs__item(id='place-schedule', class='active'): .b-tabs__content.b-tabs__content_nospace
-            .tab.b-tabs__item(id='place-contacts'):                 .b-tabs__content.b-tabs__content_nospace
+      .tabs.b-tabs
+        .tab.b-tabs__item(id='place-desc'):                     .b-tabs__content.b-tabs__content_page-bg
+        .tab.b-tabs__item(id='place-schedule', class='active'): .b-tabs__content.b-tabs__content_nospace
+        .tab.b-tabs__item(id='place-contacts'):                 .b-tabs__content.b-tabs__content_nospace
+          .pull-to-refresh-content
+            .pull-to-refresh-layer
+              .preloader
+              .pull-to-refresh-arrow
+            .b-contacts
+            .empty-page(data-text='Список контактов пуст')
 
     include ../ui/toolbar.pug

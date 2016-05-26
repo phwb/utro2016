@@ -1,8 +1,7 @@
 'use strict';
 
-// шаблон детальной страницы
+import {logger} from '../../app/helpers';
 import _detail  from './templates/detail-content.jade';
-// коллекция
 import schedule from '../../collections/schedule';
 import days     from '../../collections/days';
 
@@ -24,6 +23,8 @@ function setTitle(model) {
   $title.text(`${name}. ${date}`);
 }
 
+let ajax = Backbone.ajax;
+
 class Page extends Backbone.View {
   get template() {
     return _.template(_detail);
@@ -36,7 +37,25 @@ class Page extends Backbone.View {
   }
 
   toggleMySchedule() {
-    console.log('click on the button');
+    let params = {
+      url: 'http://api.utro2016.loc/',
+      type: 'POST',
+      data: {
+        VOTE_ID: '1',
+        vote: 'yes',
+        PUBLIC_VOTE_ID: '1',
+        vote_radio_1: '2',
+        vote_radio_2: '3',
+        userID: 'USER_FROM_APP'
+      }
+    };
+    ajax(params)
+      .done(function (data) {
+        console.log(data);
+      })
+      .fail(function () {
+        console.log(arguments);
+      });
   }
 
   initialize({id} = {}) {

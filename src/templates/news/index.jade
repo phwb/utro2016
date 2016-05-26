@@ -11,12 +11,13 @@
           .b-nav-button__item.b-nav-button__item_bottom
 .pages
   .page.page-no-space(data-page='news-list')
-    .page-content.pull-to-refresh-content(data-ptr-distance='55')
+    .page-content.pull-to-refresh-content
       .pull-to-refresh-layer
         .preloader
         .pull-to-refresh-arrow
       .content-block
         .content-block-inner
+      .empty-page(data-text='Новостей пока нет')
 
     include ../ui/toolbar.pug
 

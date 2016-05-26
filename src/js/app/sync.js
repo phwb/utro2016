@@ -8,6 +8,12 @@ let defaults = {
   // domain: 'http://192.168.1.46/local/api'
 };
 
+function camelize(str) {
+  return str.toLowerCase().replace(/_(.)/g, function(match, index) {
+    return index.toUpperCase();
+  });
+}
+
 /**
  * Функция возвращает объект соответствия ключей с сервреа ключам из модели
  *
@@ -19,7 +25,7 @@ function getModelParams(obj, map = {}) {
   let result = {};
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
-      let mapKey = map.hasOwnProperty(key) ? map[key] : key.toLocaleLowerCase();
+      let mapKey = map.hasOwnProperty(key) ? map[key] : camelize(key);
       let val = key === 'SORT' ? +obj[key] : obj[key];
       // если пришло значение, то установми его
       // иначе его по дефолту поставит Backbone
@@ -33,6 +39,8 @@ function getModelParams(obj, map = {}) {
 
 class Sync {
   constructor(collection) {
+    // статус ajax запроса
+    collection.status = false;
     // добавляем к коллекции функцию обновления
     collection.refresh = () => this.update({
       method: 'update',
@@ -67,7 +75,6 @@ class Sync {
       // если коллекция после получения имеет какие то данные
       // то просто передадим управление дальше
       if (collection.length > 0) {
-        console.log('fetch from DB');
         collection.trigger('sync:db', collection);
         return resolve();
       }
@@ -75,6 +82,7 @@ class Sync {
       // если коллекция пустая, значит это скорее всего первый запуск
       // и надо получить данный с сервера
       console.time(`ajax`);
+      collection.status = 'pending';
       collection.trigger('sync:ajax.start');
 
       let url = this._getUrl();
@@ -119,6 +127,7 @@ class Sync {
     let syncMap = collection.model.prototype.syncMap || {};
     let len = items.length;
 
+    // let t = collection.url === '/contacts' ? 5000 : 10;
     // setTimeout(() => {
 
     items.forEach(item => {
@@ -132,6 +141,7 @@ class Sync {
           len -= 1;
           if (len < 1) {
             // по завершению записи колллекции в БД, просигналим событием об этом
+            collection.status = false;
             collection.trigger('sync:ajax.end', collection);
             // передадим управления дальше
             resolve({
@@ -147,7 +157,7 @@ class Sync {
       });
     });
 
-    // }, 5000);
+    // }, t);
   }
 
   ajaxError(reject) {
@@ -160,11 +170,12 @@ class Sync {
         resolve();
       }
 
+      let collection = this.collection;
       // тут на прямую используется localForage
       // это конечно не совсем правильно, но обертку писать пока не хочется
       let lf = Backbone.localforage.localforageInstance;
       // ключ по которому будем сохранять дату последнего обновления
-      let key = this._getKey(this.collection.sync.localforageKey);
+      let key = this._getKey(collection.sync.localforageKey);
       let url = this._getUrl();
 
       if (method === 'set' && timestamp) {
@@ -177,54 +188,70 @@ class Sync {
       if (method === 'update') {
         lf.getItem(key)
           .then(value => {
-            if (value) {
-              let params = {
-                url: url,
-                data: {
-                  lastUpdateDate: value
-                },
-                dataType: 'json'
-              };
-              ajax(params)
-                .done((data) => {
-                  // вот это мне не сильно нравится, лучше обновлять конкретную модель
-                  // и подписываться на событие change, а так мы сбрасываем всю коллекцию
-                  // если переделывать то в функции ajaxUpdateSuccess нужно изменить
-                  // collection.create на что нибудь другое
-                  this.ajaxUpdateSuccess(data);
-                  this.collection.fetch({reset: true});
-                  resolve();
-                })
-                .fail(() => reject(new Error(`Ошибка обновления ${key}`)));
-            }
+            value = value || '';
+            collection.trigger('sync:ajax.start');
+
+            let params = {
+              url: url,
+              data: {
+                lastUpdateDate: value
+              },
+              dataType: 'json'
+            };
+            ajax(params)
+              .done(data => {
+                this.ajaxUpdateSuccess(data).then(() => resolve());
+              })
+              .fail(() => reject(new Error(`Ошибка обновления ${key}`)))
+              .always(() => collection.trigger('sync:ajax.end'));
           })
-          .catch(() => reject(new Error('ошибка чтения в localForage')));
+          .catch(() => reject(new Error('ошибка чтения из localForage')));
+        return this;
       }
     });
   }
 
   ajaxUpdateSuccess(data) {
-    let items = data.ITEMS || [];
-    let timestamp = data.LAST_DATE_UPDATE || false;
+    return new Promise(resolve => {
+      let items = data.ITEMS || [];
+      let timestamp = data.LAST_DATE_UPDATE || false;
 
-    if (!items.length) {
-      return this;
-    }
+      if (!items.length) {
+        resolve();
+        return this;
+      }
 
-    let collection = this.collection;
-    let syncMap = collection.model.prototype.syncMap || {};
+      let collection = this.collection;
+      let syncMap = collection.model.prototype.syncMap || {};
 
-    items.forEach(item => {
-      let param = getModelParams(item, syncMap);
-      collection.create(param, {silent: true});
+      // подготавливаем параметры для вставки в коллекцию
+      let params = items.map(item => getModelParams(item, syncMap));
+
+      // метод set достаточно умный, чтоб обновить или создать модель в коллекции
+      // возвращает созданные/обновленные модели
+      // --------------
+      // remove = false обязательно, иначе из коллекции удалятся остальные модели
+      let models = collection.set(params, {remove: false});
+
+      // теперь сохрнаим их в БД
+      let len = models.length;
+      models.forEach(model => model.save(null, {
+        success: () => {
+          len -= 1;
+          // только после того как все модели сохранились
+          // вызовем resolve и обновим timestamp
+          if (len < 1) {
+            if (timestamp) {
+              this.update({
+                timestamp: timestamp,
+                method: 'set'
+              });
+            }
+            resolve();
+          }
+        }
+      }));
     });
-
-    if (timestamp) {
-      this.update({
-        timestamp: timestamp,
-        method: 'set'
-      });
-    }
   }
 
   error() {
@@ -233,11 +260,14 @@ class Sync {
       e = new Error('Неизвестная ошибка');
     }
     this.collection.trigger('sync:error', e);
+    this.collection.status = false;
+
     logger.error('reject', arguments);
     console.groupEnd();
   }
 
   done() {
+    this.collection.status = false;
     console.groupEnd();
   }
 
@@ -257,3 +287,50 @@ class Sync {
 }
 
 export default Sync;
+
+// вспомогательная функция для получения опросов
+export function getPollFields(model) {
+  return new Promise((resolve, reject) => {
+    if (!model.collection) {
+      reject(new Error('Нет коллекции опросов'));
+    }
+
+    let url = model.collection.url;
+    if (!url) {
+      reject(new Error('Пустой URL опросов'));
+    }
+
+    let id = model.get('id');
+    let params = {
+      url: defaults.domain + url + '/' + id
+    };
+    ajax(params)
+      .done(data => {
+        let questions = data.QUESTIONS;
+        if (!questions.length) {
+          reject(new Error('Нет вопросов'));
+        }
+
+        let answerMap = {
+          ID: 'id',
+          TEXT: 'text',
+          TEXT_TYPE: 'textType',
+          FIELD_TYPE: 'type',
+          PERCENT: 'percent'
+        };
+        let params = questions.map(question => {
+          let answers = question.ANSWERS.map(answer => {
+            return getModelParams(answer, answerMap);
+          });
+          let result = getModelParams(question);
+          result.answers = answers;
+          return result;
+        });
+
+        resolve(params);
+      })
+      .fail(() => {
+        reject(new Error('ajax fail'));
+      });
+  });
+}

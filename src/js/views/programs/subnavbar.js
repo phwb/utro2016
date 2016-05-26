@@ -1,5 +1,6 @@
 'use strict';
 
+import {logger} from '../../app/helpers';
 import _item    from './templates/subnavbar-item.jade';
 import config   from '../../models/config';
 import allDays  from '../../collections/days';
@@ -60,18 +61,18 @@ class Subnavbar extends Backbone.View {
   addAll() {
     let shiftID = config.get('shiftID');
     if (!shiftID) {
-      console.log('Нужно выбрать смену');
+      logger('Нужно выбрать смену');
       return this;
     }
 
     if (!this.collection.length) {
-      console.log('Дни еще не загрузились');
+      logger('Дни еще не загрузились');
       return this;
     }
 
     let days = this.collection.where({shiftID: shiftID}) || [];
     if (!days.length) {
-      console.log('какая-то исключительная ситуация, не найдены дни для выбранной смены');
+      logger('какая-то исключительная ситуация, не найдены дни для выбранной смены');
       return this;
     }
 

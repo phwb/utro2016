@@ -2,10 +2,10 @@
 
 import {logger}                       from '../../app/helpers';
 import _item                          from './templates/page-list-item.jade';
-import {SimpleLink}                   from '../ui/list';
-// коллецкия
 import {Experts, default as experts}  from '../../collections/experts';
 import places                         from '../../collections/places';
+import {SimpleLink}                   from '../ui/list';
+import {PullDown}                     from '../ui/page';
 
 class List extends SimpleLink {
   get className() {
@@ -25,22 +25,18 @@ class List extends SimpleLink {
   }
 }
 
-class Page extends Backbone.View {
+let selectedFederal;
+let selectedPlaces;
+class Page extends PullDown {
   get collection() {
     return experts;
   }
 
   initialize() {
-    let collection = this.collection;
-    this.listenTo(collection, 'reset', this.addAll);
-    this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
+    super.initialize();
 
     this.$federal = this.$el.find('#experts-federal .b-list');
     this.$places = this.$el.find('#experts-places .b-list');
-  }
-
-  loadSuccess() {
-    this.addAll();
   }
 
   addAll() {
@@ -56,8 +52,9 @@ class Page extends Backbone.View {
       return this;
     }
 
+    selectedFederal = new Experts(experts);
     let view = new List({
-      collection: new Experts(experts),
+      collection: selectedFederal,
       href: function (model) {
         let id = model.get('id');
         return `experts/detail.html?id=${id}`;
@@ -82,8 +79,9 @@ class Page extends Backbone.View {
       return params;
     });
 
+    selectedPlaces = new Experts(experts);
     let view = new List({
-      collection: new Experts(experts),
+      collection: selectedPlaces,
       href: function (model) {
         let id = model.get('id');
         return `experts/detail.html?id=${id}`;
@@ -94,9 +92,17 @@ class Page extends Backbone.View {
     return this;
   }
 
-  render() {
-    this.addAll();
-    return this;
+  addItem(model) {
+    if (!selectedFederal || !selectedPlaces) {
+      return this;
+    }
+
+    let placeID = model.get('placeID');
+    if (placeID === 0) {
+      selectedFederal.set(model);
+    } else {
+      selectedPlaces.set(model);
+    }
   }
 }
 

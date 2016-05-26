@@ -3,8 +3,8 @@
     img.b-contacts__img(src!='<%= photo %>')
   .b-contacts__body
     .b-contacts__name <%= name %>
-    | <% if (obj.desc) { %>
-    .b-contacts__desc <%= obj.desc %>
+    | <% if (email) { %>
+    .b-contacts__desc <%= email %>
     | <% } %>
     | <% if (phone) { %>
     .b-contacts__phone

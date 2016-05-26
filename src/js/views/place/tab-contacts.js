@@ -2,8 +2,9 @@
 
 import _item                              from './templates/detail-contacts-item.jade';
 import {logger}                           from '../../app/helpers';
-import {Simple, Item}                     from '../ui/list';
 import {Contacts, default as allContacts} from '../../collections/contacts';
+import {Simple, Item}                     from '../ui/list';
+import {PullDown}                         from '../ui/page';
 
 class ListItem extends Item {
   get className() {
@@ -25,8 +26,10 @@ class List extends Simple {
   }
 }
 
+/** коллекция площадок для выбранной смены */
+let selectedCollection;
 let place = 0;
-class ContactList extends Backbone.View {
+class ContactList extends PullDown {
   get className() {
     return 'b-contacts';
   }
@@ -36,19 +39,9 @@ class ContactList extends Backbone.View {
   }
 
   initialize({placeID = 0} = {}) {
+    super.initialize();
     place = placeID;
-
-    let collection = this.collection;
-    this.listenTo(collection, 'reset', this.addAll);
-    this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
-
-    if (collection.length) {
-      this.addAll();
-    }
-  }
-
-  loadSuccess() {
-    this.addAll();
+    this.$list = this.$el.find('.b-contacts');
   }
 
   addAll() {
@@ -57,19 +50,33 @@ class ContactList extends Backbone.View {
       return this;
     }
 
-    let contacts = this.collection.where({placeID: place});
-    let collection = new Contacts(contacts);
+    let collection = this.collection;
+    let contacts = collection.where({placeID: place});
+    if (!contacts.length) {
+      if (collection.status && collection.status !== 'pending') {
+        this.$empty.show();
+      }
+      return this;
+    }
 
+    selectedCollection = new Contacts(contacts);
     let view = new List({
-      collection: collection
+      collection: selectedCollection
     });
 
-    this.$el.html( view.render().$el );
+    this.$empty.hide();
+    this.$list.html( view.render().$el );
   }
 
-  render() {
-    this.addAll();
-    return this;
+  addItem(model) {
+    // если нет коллекции, то и не чего тут делать
+    if (!selectedCollection) {
+      return this;
+    }
+
+    if (place === model.get('placeID')) {
+      selectedCollection.set(model);
+    }
   }
 }
 

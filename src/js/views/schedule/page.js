@@ -2,9 +2,10 @@
 
 import _item                              from './templates/page-list-item.jade';
 import {logger}                           from '../../app/helpers';
-import {SimpleLink}                       from '../ui/list';
 import {Schedule, default as allSchedule} from '../../collections/schedule';
 import days                               from '../../collections/days';
+import {SimpleLink}                       from '../ui/list';
+import {PullDown}                         from '../ui/page';
 
 class List extends SimpleLink {
   get className() {
@@ -43,30 +44,27 @@ function setTitle(model) {
   $title.text(`${name}. ${date}`);
 }
 
+/** коллекция площадок для выбранной смены */
+let selectedCollection;
 let place, day;
-class Page extends Backbone.View {
+class Page extends PullDown {
   get collection() {
     return allSchedule;
   }
 
   initialize({dayID = 0, placeID = 0} = {}) {
+    super.initialize();
+
     day = dayID;
     place = placeID;
-
-    let collection = this.collection;
-    this.listenTo(collection, 'reset', this.addAll);
-    this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
 
     this.$list = this.$el.find('.b-list');
   }
 
-  loadSuccess() {
-    this.addAll();
-  }
-
   addAll() {
     if (!day) {
-      logger('не выбран день');
+      logger.info('не выбран день');
+      return this;
     }
     let model = days.findWhere({id: day});
     setTitle(model);
@@ -76,26 +74,37 @@ class Page extends Backbone.View {
       placeID: place
     });
     if (!schedule.length) {
-      logger('почему то пустое расписание');
+      if (this.collection.status !== 'pending') {
+        this.$empty.show();
+      }
+
+      logger.info('почему то пустое расписание');
       return this;
     }
 
+    selectedCollection = new Schedule(schedule);
     let view = new List({
-      collection: new Schedule(schedule),
+      collection: selectedCollection,
       href: function (model) {
         let id = model.get('id');
         return `schedule/detail.html?id=${id}`;
       }
     });
 
+    this.$empty.hide();
     this.$list.html( view.render().$el );
   }
 
-  render() {
-    this.addAll();
-    return this;
+  addItem(model) {
+    // если нет коллекции, то и не чего тут делать
+    if (!selectedCollection) {
+      return this;
+    }
+
+    if (day === model.get('dayID') && place === model.get('placeID')) {
+      selectedCollection.set(model);
+    }
   }
 }
-
 
 export default Page;

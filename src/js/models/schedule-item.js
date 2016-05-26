@@ -9,7 +9,7 @@ let ScheduleItem = Backbone.Model.extend({
     end: 0,
     location: 'Не указано',
     // зависимые поля, по ним строятся выборки
-    placeID: 0,
+    placeID: '0',
     dayID: 0,
     sort: 10
   },

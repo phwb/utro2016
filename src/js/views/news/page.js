@@ -1,10 +1,9 @@
 'use strict';
 
-import {SimpleLink} from '../ui/list';
-// коллецкия
-import news         from '../../collections/news';
-// шаблон
 import _item        from './templates/page-list-item.jade';
+import news         from '../../collections/news';
+import {SimpleLink} from '../ui/list';
+import {PullDown}   from '../ui/page';
 
 class List extends SimpleLink {
   get tagName() {
@@ -29,57 +28,39 @@ class List extends SimpleLink {
   }
 }
 
-class Page extends Backbone.View {
+class Page extends PullDown {
   get collection() {
     return news;
   }
 
   initialize() {
-    this.$pull = this.$el.find('.pull-to-refresh-content');
-
-    let collection = this.collection;
-    this.listenTo(collection, 'reset', this.addAll);
-    this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
-
+    super.initialize();
     this.$list = this.$el.find('.content-block-inner');
   }
 
-  // события pull to refresh
-  get events() {
-    return {
-      'refresh .pull-to-refresh-content': 'refreshStart',
-      'refreshdone .pull-to-refresh-content': 'refreshDone'
-    };
-  }
-
-  refreshStart() {
-    // после завершения операвции обновления нужно вызвать триггер  "refreshend"
-    this.collection.refresh().then(() => this.$pull.trigger('refreshend'));
-  }
-
-  refreshDone() {
-    this.addAll();
-  }
-
-  loadSuccess() {
-    this.addAll();
-  }
-
   addAll() {
+    let collection = this.collection;
+    if (!collection.length) {
+      if (collection.status && collection.status !== 'pending') {
+        this.$empty.show();
+      }
+      return this;
+    }
+
     let view = new List({
-      collection: this.collection,
+      collection: collection,
       href: function (model) {
         let id = model.get('id');
         return `news/detail.html?id=${id}`;
       }
     });
 
+    this.$empty.hide();
     this.$list.html( view.render().$el );
   }
 
-  render() {
-    this.addAll();
-    return this;
+  addItem(model) {
+    this.collection.set(model, {remove: false});
   }
 }
 

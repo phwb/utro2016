@@ -1,11 +1,11 @@
 'use strict';
 
-import {SimpleLink}                 from '../ui/list';
-// шаблон
+import {logger}                     from '../../app/helpers';
 import _item                        from './templates/page-list-item.jade';
-// коллецкия
 import {Places, default as places}  from '../../collections/places';
 import config                       from '../../models/config';
+import {SimpleLink}                 from '../ui/list';
+import {PullDown}                   from '../ui/page';
 
 class List extends SimpleLink {
   get className() {
@@ -26,57 +26,69 @@ class List extends SimpleLink {
   }
 }
 
-class Page extends Backbone.View {
+/** коллекция площадок для выбранной смены */
+let selectedCollection;
+class Page extends PullDown {
   get collection() {
     return places;
   }
 
   initialize() {
-    let collection = this.collection;
-    this.listenTo(collection, 'reset', this.addAll);
-    this.listenTo(collection, 'sync:ajax.end', this.loadSuccess);
-
+    super.initialize();
     this.$list = this.$el.find('.b-list');
+    this.listenTo(config, 'change:shiftID', this.changeShift);
   }
 
-  loadSuccess() {
+  changeShift() {
     this.addAll();
   }
 
   addAll() {
+    let collection = this.collection;
     let shiftID = config.get('shiftID');
     if (!shiftID) {
-      console.log('Нужно выбрать смену');
+      logger.info('Нужно выбрать смену');
       return this;
     }
 
-    if (!this.collection.length) {
-      console.log('Площадки еще не загрузились');
+    if (!collection.length) {
+      logger.info('Площадки еще не загрузились');
       return this;
     }
 
-    let places = this.collection.where({shiftID: shiftID}) || [];
+    let places = collection.where({shiftID: shiftID}) || [];
     if (!places.length) {
-      console.log('какая-то исключительная ситуация, не найдены площадки для выбранной смены');
+      logger.error('какая-то исключительная ситуация, не найдены площадки для выбранной смены');
       return this;
     }
 
-    // маленький хак, потом наверно придется переделать
-    // для импорта массива в коллекцию
+    selectedCollection = new Places(places);
     let list = new List({
-      collection: new Places(places),
+      collection: selectedCollection,
       href: function (model) {
         let id = model.get('id');
         return `places/detail.html?id=${id}`;
       }
     });
 
+    this.$empty.hide();
     this.$list.html( list.render().$el );
   }
 
-  render() {
-    this.addAll();
-    return this;
+  addItem(model) {
+    // если нет коллекции, то и не чего тут делать
+    if (!selectedCollection) {
+      return this;
+    }
+
+    let shiftID = config.get('shiftID');
+    if (!shiftID) {
+      logger('нужно выбрать смену');
+      return this;
+    }
+    if (shiftID === model.get('shiftID')) {
+      selectedCollection.set(model);
+    }
   }
 }
 

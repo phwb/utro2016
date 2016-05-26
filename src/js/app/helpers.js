@@ -1,17 +1,16 @@
 'use strict';
 
 import dateFormat from 'date-format';
-import Sync     from './sync';
-// настройки приложения
-import config   from '../models/config';
-// коллекции
-import shifts   from '../collections/shifts';
-import days     from '../collections/days';
-import schedule from '../collections/schedule';
-import places   from '../collections/places';
-import contacts from '../collections/contacts';
-import news     from '../collections/news';
-import experts  from '../collections/experts';
+import Sync       from './sync';
+import config     from '../models/config';
+import shifts     from '../collections/shifts';
+import days       from '../collections/days';
+import schedule   from '../collections/schedule';
+import places     from '../collections/places';
+import contacts   from '../collections/contacts';
+import news       from '../collections/news';
+import experts    from '../collections/experts';
+import polls      from '../collections/polls';
 
 // + logger
 let log = true;
@@ -97,23 +96,22 @@ function fetchConfig() {
  */
 export function initSync(callback = () => {}) {
   let sync = Promise.resolve();
-  sync
+  return sync
     .then(fetchConfig)
-    .then(() => console.time('Время загрузки приложения'))
+    // .then(() => console.time('Время загрузки приложения'))
     .then(() => new Sync(shifts))
     .then(() => new Sync(days))
     .then(() => callback())
     .then(() => new Sync(places))
-    .then(() => new Sync(schedule))
     .then(() => new Sync(contacts))
     .then(() => new Sync(experts))
     .then(() => new Sync(news))
     // .then(() => new Sync(utro24))
     // .then(() => new Sync(forum))
-    // .then(() => new Sync(polls))
-    .then(() => console.timeEnd('Время загрузки приложения'))
+    .then(() => new Sync(polls))
+    .then(() => new Sync(schedule))
+    // .then(() => console.timeEnd('Время загрузки приложения'))
     .catch(e => logger(e));
-  return sync;
 }
 // - sync
 

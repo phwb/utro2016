@@ -12,6 +12,14 @@ class Item extends Backbone.View {
     return _.template(_simple);
   }
 
+  initialize() {
+    this.listenTo(this.model, 'change', this.change);
+  }
+
+  change() {
+    this.render();
+  }
+
   render() {
     this.$el.html( this.template( this.model.toJSON() ) );
     return this;
@@ -26,6 +34,10 @@ class Simple extends Backbone.View {
 
   get Item() {
     return Item;
+  }
+
+  initialize() {
+    this.listenTo(this.collection, 'add', this.addItem);
   }
 
   addItem(model) {
@@ -48,6 +60,7 @@ function defaultHref(model) {
 // список со ссылками
 class SimpleLink extends Simple {
   initialize({href = defaultHref} = {}) {
+    super.initialize();
     this.href = href;
   }
 

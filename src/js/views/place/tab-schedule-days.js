@@ -1,10 +1,8 @@
 'use strict';
 
-// шаблоны
+import {logger}                   from '../../app/helpers';
 import _item                      from './templates/detail-schedule-item.jade';
-// UI
 import {SimpleLink}               from '../ui/list';
-// коллекции
 import {Days, default as allDays} from '../../collections/days';
 import config                     from '../../models/config';
 
@@ -49,18 +47,19 @@ class ScheduleDays extends Backbone.View {
   addAll() {
     let shiftID = config.get('shiftID');
     if (!shiftID) {
-      console.log('Нужно выбрать смену');
+      logger('Нужно выбрать смену');
       return this;
     }
 
-    if (!this.collection.length) {
-      console.log('дни еще не загрузились');
+    let collection = this.collection;
+    if (!collection.length) {
+      logger('дни еще не загрузились');
       return this;
     }
 
-    let days = this.collection.where({shiftID: shiftID}) || [];
+    let days = collection.where({shiftID: shiftID}) || [];
     if (!days.length) {
-      console.log('какая-то исключительная ситуация, не найдены дни для выбранной смены');
+      logger('какая-то исключительная ситуация, не найдены дни для выбранной смены');
       return this;
     }
 

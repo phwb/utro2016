@@ -1,32 +1,32 @@
 'use strict';
 
-// коллекции
-import places from '../../collections/places';
-// дополнительные вьюшки
+import places       from '../../collections/places';
 import ScheduleDays from './tab-schedule-days';
-import ContactList from './tab-contacts';
+import ContactList  from './tab-contacts';
 
-let $ = Backbone.$;
+function setTitle(model) {
+  let $ = Backbone.$;
+  let name = model.get('shortName');
+  let $title = $('.navbar-title');
+  $title.text(`Урал ${name}`);
+}
+
+// сначала всегда полагаем что есть ошибки
+let error = true;
 
 class Page extends Backbone.View {
-  initialize(params) {
-    // сначала всегда полагаем что есть ошибки
-    this.error = true;
-
-    let id = params.id || false;
+  initialize({id = false} = {}) {
     if (!id) {
-      console.log('как то это странно, сюда попасть по идее не реально');
-      return this;
+      throw new Error('как то это странно, сюда попасть по идее не реально');
     }
 
     let model = places.get(id);
     if (!model) {
-      console.log(`че то вообще странное творится, не найдена площадка ${id}`);
-      return this;
+      throw new Error(`че то вообще странное творится, не найдена площадка ${id}`);
     }
 
     // если дошли до сюда, значит ошибок нет
-    this.error = false;
+    error = false;
 
     // кэшируем табы
     this.$desc = this.$el.find('#place-desc .b-tabs__content');
@@ -35,18 +35,12 @@ class Page extends Backbone.View {
     // сохрнаим модель
     this.model = model;
     // установим заголово экрана
-    this.setTitle();
-  }
-
-  setTitle() {
-    let name = this.model.get('shortName');
-    let $title = $('.navbar-title');
-    $title.text(`Урал ${name}`);
+    setTitle(model);
   }
 
   render() {
     // если ошибка то она выведется в консоль выше
-    if (this.error) {
+    if (error) {
       return this;
     }
     return this
@@ -90,9 +84,10 @@ class Page extends Backbone.View {
    */
   _renderContactList() {
     let contacts = new ContactList({
+      el: this.$contacts,
       placeID: this.model.get('id')
     });
-    this.$contacts.html( contacts.render().$el );
+    contacts.render();
     return this;
   }
 }
