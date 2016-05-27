@@ -1,7 +1,5 @@
 'use strict';
 
-import {logger} from './helpers';
-
 let ajax = Backbone.ajax;
 let defaults = {
   domain: 'http://api.utro2016.loc'
@@ -262,7 +260,7 @@ class Sync {
     this.collection.trigger('sync:error', e);
     this.collection.status = false;
 
-    logger.error('reject', arguments);
+    console.error('reject', arguments);
     console.groupEnd();
   }
 

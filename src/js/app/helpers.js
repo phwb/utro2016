@@ -11,6 +11,7 @@ import contacts   from '../collections/contacts';
 import news       from '../collections/news';
 import experts    from '../collections/experts';
 import polls      from '../collections/polls';
+import utro24     from '../collections/utro24';
 
 // + logger
 let log = true;
@@ -106,7 +107,7 @@ export function initSync(callback = () => {}) {
     .then(() => new Sync(contacts))
     .then(() => new Sync(experts))
     .then(() => new Sync(news))
-    // .then(() => new Sync(utro24))
+    .then(() => new Sync(utro24))
     // .then(() => new Sync(forum))
     .then(() => new Sync(polls))
     .then(() => new Sync(schedule))

@@ -1,7 +1,6 @@
 'use strict';
 
 import _item        from './templates/page-list-item.jade';
-import news         from '../../collections/news';
 import {SimpleLink} from '../ui/list';
 import {PullDown}   from '../ui/page';
 
@@ -28,13 +27,14 @@ class List extends SimpleLink {
   }
 }
 
+let href = function (model) {
+  let id = model.get('id');
+  return `news/detail.html?id=${id}`;
+};
 class Page extends PullDown {
-  get collection() {
-    return news;
-  }
-
-  initialize() {
+  initialize(params) {
     super.initialize();
+    this.href = params.href || href;
     this.$list = this.$el.find('.content-block-inner');
   }
 
@@ -49,10 +49,7 @@ class Page extends PullDown {
 
     let view = new List({
       collection: collection,
-      href: function (model) {
-        let id = model.get('id');
-        return `news/detail.html?id=${id}`;
-      }
+      href: this.href
     });
 
     this.$empty.hide();
