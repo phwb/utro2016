@@ -12,6 +12,8 @@ import news       from '../collections/news';
 import experts    from '../collections/experts';
 import polls      from '../collections/polls';
 import utro24     from '../collections/utro24';
+import about      from '../collections/about';
+import notify     from '../collections/notify';
 
 // + logger
 let log = true;
@@ -31,6 +33,30 @@ logger.error = function () {
   }
 };
 // - logger
+
+// + update notify
+/**
+ * самая простая функция автообновления раз в 60 секунд
+ */
+let $ = Backbone.$;
+
+function searchNewNotify() {
+  let newer = notify.filter(model => model.get('isNew') === true);
+  let $tip = $('.b-tip__body');
+
+  if (newer.length) {
+    $tip.show().text(newer.length);
+  } else {
+    $tip.hide().text('');
+  }
+}
+
+function updateNotify() {
+  searchNewNotify();
+  notify.on('add change', searchNewNotify);
+  setTimeout(() => notify.refresh().then(() => updateNotify()), 60000);
+}
+// - update notify
 
 // + router
 /**
@@ -69,7 +95,8 @@ export function initRouter() {
     let page = e.detail.page;
     load(page.name)
       .then(route => route(page.container, page.query || {}))
-      .catch(e => console.log(e));
+      .then(searchNewNotify)
+      .catch(e => console.error(e));
   });
 }
 // - router
@@ -99,20 +126,22 @@ export function initSync(callback = () => {}) {
   let sync = Promise.resolve();
   return sync
     .then(fetchConfig)
-    // .then(() => console.time('Время загрузки приложения'))
+    .then(() => console.time('Время загрузки приложения'))
     .then(() => new Sync(shifts))
     .then(() => new Sync(days))
+    .then(() => new Sync(notify))
     .then(() => callback())
     .then(() => new Sync(places))
     .then(() => new Sync(contacts))
     .then(() => new Sync(experts))
     .then(() => new Sync(news))
     .then(() => new Sync(utro24))
-    // .then(() => new Sync(forum))
+    .then(() => new Sync(about))
     .then(() => new Sync(polls))
     .then(() => new Sync(schedule))
-    // .then(() => console.timeEnd('Время загрузки приложения'))
-    .catch(e => logger(e));
+    .then(updateNotify)
+    .catch(e => console.error(e))
+    .then(() => console.timeEnd('Время загрузки приложения'));
 }
 // - sync
 

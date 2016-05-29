@@ -22,6 +22,11 @@ class Item extends Backbone.View {
 
   render() {
     this.$el.html( this.template( this.model.toJSON() ) );
+    this.afterRender();
+    return this;
+  }
+
+  afterRender() {
     return this;
   }
 }

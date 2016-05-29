@@ -65,7 +65,7 @@ class PullDown extends Backbone.View {
     this.$pull = this.$el.find('.pull-to-refresh-content');
     this.$empty = this.$el.find('.empty-page');
 
-    let status = collection.status;
+    let status = collection.status || false;
     if (status && status === 'pending') {
       this.loadStart();
     }

@@ -1,10 +1,10 @@
 'use strict';
 
+
 import _item        from './templates/page-list-item.jade';
 import {logger}     from '../../app/helpers';
-import polls        from '../../collections/polls';
-import {SimpleLink} from '../ui/list';
 import {PullDown}   from '../ui/page';
+import {SimpleLink} from '../ui/list';
 
 class List extends SimpleLink {
   get className() {
@@ -26,18 +26,14 @@ class List extends SimpleLink {
 }
 
 class Page extends PullDown {
-  get collection() {
-    return polls;
-  }
-
   initialize() {
     super.initialize();
     this.$list = this.$el.find('.b-list');
-    this.$el.find('.toolbar-poll').addClass('is-active');
   }
 
   addAll() {
     let collection = this.collection;
+
     if (!collection.length) {
       if (collection.status !== 'pending') {
         this.$empty.show();
@@ -50,7 +46,7 @@ class Page extends PullDown {
     let view = new List({
       collection: collection,
       href: function (model) {
-        return `polls/detail.html?id=${model.get('id')}`;
+        return `about/detail.html?id=${model.get('id')}`;
       }
     });
 

@@ -25,6 +25,7 @@ class Page extends Backbone.View {
 
     this.$empty = this.$el.find('.empty-page');
     this.$content = this.$el.find('.content-block-inner');
+    this.$el.find('.toolbar-poll').addClass('is-active');
     this.model = model;
 
     // событие всплывает когда нажали на кнопку отправить в форме

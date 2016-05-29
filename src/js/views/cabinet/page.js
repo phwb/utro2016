@@ -47,6 +47,7 @@ class Page extends Backbone.View {
   initialize({tab = ''} = {}) {
     this.$shiftSelect = this.$el.find('#shift-select');
     this.$list = this.$el.find('#cabinet-schedule .b-list');
+    this.$el.find('.toolbar-calendar').addClass('is-active');
 
     if (tab === 'my') {
       $('#link-schedule')

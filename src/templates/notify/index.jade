@@ -1,0 +1,26 @@
+.navbar
+  .navbar-inner
+    .left
+      a.back.link.b-back(href='#'): svg.b-back__icon: use(xlink:href='#icon_back')
+    .center.sliding Уведомления
+    .right
+      a.link.b-nav-button(href='#', id='viewed')
+        svg.b-filter-ctrl__icon
+          use(xlink:href='#icon_check')
+      a.link.open-panel.b-nav-button(href='#')
+        .b-nav-button__body
+          .b-nav-button__item.b-nav-button__item_top
+          .b-nav-button__item.b-nav-button__item_center
+          .b-nav-button__item.b-nav-button__item_bottom
+.pages
+  .page.page-no-space(data-page='notify')
+    .page-content.pull-to-refresh-content
+      .pull-to-refresh-layer
+        .preloader
+        .pull-to-refresh-arrow
+      .content-block
+        .content-block-inner
+      .empty-page(data-text='Новостей пока нет')
+
+    include ../ui/toolbar.pug
+
