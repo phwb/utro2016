@@ -7,6 +7,12 @@ let defaults = {
   // domain: 'http://192.168.1.46/local/api'
 };
 
+/**
+ * Функиция переводит строку в camelcase TEXT_TYPE => textType
+ *
+ * @param str
+ * @returns {string}
+ */
 function camelize(str) {
   return str.toLowerCase().replace(/_(.)/g, function(match, index) {
     return index.toUpperCase();
@@ -122,23 +128,22 @@ class Sync {
     // ищем карту соответствия полей с сервера полям из модели
     // если карта пустая, то просто создадим модель с полями
     // пришедшими с сервера в нижнем регистре
-    console.time(`parse`);
     let syncMap = collection.model.prototype.syncMap || {};
     let len = items.length;
 
-    // let t = collection.url === '/contacts' ? 5000 : 10;
-    // setTimeout(() => {
-
-    items.forEach(item => {
+    console.time(`parse`);
+    function save(item) {
       let param = getModelParams(item, syncMap);
       collection.create(param, {
         silent: true,
         // функция success выполняется каждый раз когда успешно сохраняется модель в БД,
         // но из того что "Расписание" слишком большое, сохранение проходит долго ~23 секунды
         // поэтому функцию resolve мы вызываем только тогда, когда все модели данной коллекции сохранены
+        // ----------------
+        // UPDATE 29.05.2016 - переписал с цикла на рекурсию
         success: function () {
           len -= 1;
-          if (len < 1) {
+          if (len < 0) {
             // по завершению записи колллекции в БД, просигналим событием об этом
             collection.status = false;
             collection.trigger('sync:ajax.end', collection);
@@ -149,14 +154,16 @@ class Sync {
             });
             console.timeEnd(`parse`);
             return true;
+          } else {
+            save(items[len]);
           }
         },
         // ну и на всякий случай вызываем reject в случае ошибки
-        error: reject.bind(this)
+        error: () => reject(new Error('ошибка записи в БД'))
       });
-    });
-
-    // }, t);
+    }
+    // рекурсивно запишем все в БД
+    save(items[len - 1]);
   }
 
   ajaxError(reject) {

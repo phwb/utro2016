@@ -31,8 +31,12 @@
 import {initRouter, initSync, formatDate} from './app/helpers';
 
 // первичная настройки подключения к БД
+// --------------
+// UPDATE 30.05.2016 - изменил место хранения БД на localStorage,
+// потому что в WebSQL и IndexedDB сохраняется очень долго
 let lf = Backbone.localforage.localforageInstance;
 lf.config({
+  driver: [lf.LOCALSTORAGE, lf.INDEXEDDB, lf.WEBSQL],
   name: 'utro2016'
 });
 
