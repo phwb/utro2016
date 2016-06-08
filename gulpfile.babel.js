@@ -7,6 +7,10 @@ import notify from 'gulp-notify';
 import plumber from 'gulp-plumber';
 import concat from 'gulp-concat';
 import gulplog from 'gulplog';
+import rename from 'gulp-rename';
+import cleanCSS from 'gulp-clean-css';
+import gulpIf from 'gulp-if';
+import uglify from 'gulp-uglify';
 // webpack
 import webpackStream from 'webpack-stream';
 import named from 'vinyl-named';
@@ -20,7 +24,13 @@ const plumberOptions = {
   errorHandler: notify.onError()
 };
 
-export const clean = () => del('./build');
+let apiUrl = 'http://api.utro2016.ru';
+// let apiUrl = 'http://utro2016.probitrix.com/local/api';
+let path = 'build';
+
+let isDev = () => path === 'build';
+
+export const clean = () => del('./' + path);
 
 export function assets() {
   let vendor = [
@@ -34,34 +44,45 @@ export function assets() {
 
   return gulp.src(vendor)
     .pipe(concat('vendor.js'))
-    .pipe(gulp.dest('./build/js/vendor'))
+    .pipe(gulpIf(!isDev(), uglify()))
+    .pipe(gulp.dest('./' + path + '/js/vendor'))
     .on('end', function () {
       let f7path = './node_modules/framework7/dist/';
-      let build = './build/js/vendor/framework7/';
+      let build = './' + path + '/js/vendor/framework7/';
 
       // Framework 7 assets
       gulp.src(f7path + 'css/framework7.ios.min.css').pipe(gulp.dest(build + 'css'));
       gulp.src(f7path + 'img/**').pipe(gulp.dest(build + 'img'));
 
       // верстка
-      gulp.src('./src/assets/js/svg.js').pipe(gulp.dest('./build/js/vendor'));
-      gulp.src('./src/assets/css/*.css').pipe(gulp.dest('./build/css'));
-      gulp.src('./src/assets/img/**').pipe(gulp.dest('./build/img'));
-      gulp.src('./src/assets/fonts/**').pipe(gulp.dest('./build/fonts'));
+      gulp.src('./src/assets/js/svg.js').pipe(gulp.dest('./'  + path + '/js/vendor'));
+      gulp.src('./src/assets/css/*.css')
+        .pipe(gulpIf(!isDev(), cleanCSS()))
+        .pipe(gulp.dest('./'  + path + '/css'));
+      gulp.src('./src/assets/img/**').pipe(gulp.dest('./'  + path + '/img'));
+      gulp.src('./src/assets/fonts/**').pipe(gulp.dest('./'  + path + '/fonts'));
     });
 }
 
 export function views() {
   return gulp.src('./src/templates/**/*.jade')
     .pipe(plumber(plumberOptions))
-    .pipe(pug())
-    .pipe(gulp.dest('./build'));
+    .pipe(pug({
+      data: {
+        api: apiUrl,
+        dev: isDev()
+      },
+      pretty: isDev()
+    }))
+    .pipe(gulp.dest('./' + path));
 }
 
 export function webpack(cb) {
   let wp = webpackStream.webpack;
-  let NoErrorsPlugin = wp.NoErrorsPlugin;
   let firstBuildReady = false;
+  let NoErrorsPlugin = wp.NoErrorsPlugin;
+  let DefinePlugin = wp.DefinePlugin;
+  let Uglify = wp.optimize.UglifyJsPlugin;
 
   function done(err, stats) {
     firstBuildReady = true;
@@ -82,9 +103,9 @@ export function webpack(cb) {
       publicPath: './js/app/'
     },
 
-    watch: true,
+    watch: isDev(),
 
-    devtool: 'source-map',
+    devtool: isDev() ? 'source-map' : false,
 
     module: {
       loaders: [
@@ -108,15 +129,23 @@ export function webpack(cb) {
     },
 
     plugins: [
-      new NoErrorsPlugin()
+      new NoErrorsPlugin(),
+      new DefinePlugin({
+        IS_DEV: JSON.stringify(isDev()),
+        API_URL: JSON.stringify(apiUrl)
+      })
     ]
   };
+
+  if (!isDev()) {
+    options.plugins.push(new Uglify());
+  }
 
   return gulp.src(['./src/js/init.js'])
     .pipe(plumber(plumberOptions))
     .pipe(named())
     .pipe(webpackStream(options, null, done))
-    .pipe(gulp.dest('./build/js/app'))
+    .pipe(gulp.dest('./'  + path + '/js/app'))
     .on('data', function () {
       if (firstBuildReady) {
         cb();
@@ -139,7 +168,37 @@ export function serve() {
   browserSync.watch('./build/**/*.*').on('change', browserSync.reload);
 }
 
+export function config() {
+  return gulp.src('./src/app/config.pug')
+    .pipe(plumber(plumberOptions))
+    .pipe(pug({
+      pretty: true
+    }))
+    .pipe(rename({
+      extname: '.xml'
+    }))
+    .pipe(gulp.dest('./app'));
+}
+
+export function appAssets() {
+  return gulp.src('./src/app/res/**').pipe(gulp.dest('./app/res'));
+}
+
+export const app = gulp.series(
+  cb => {
+    path = 'app/www';
+    cb();
+  },
+  clean,
+  config,
+  gulp.parallel(views, assets, appAssets, webpack)
+);
+
 const build = gulp.series(
+  cb => {
+    path = 'build';
+    cb();
+  },
   clean,
   gulp.parallel(views, assets, webpack),
   gulp.parallel(watch, serve)

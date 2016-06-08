@@ -1,10 +1,16 @@
 doctype
-html
+html(lang='ru')
   head
     meta(charset='utf-8')
+    meta(name='format-detection', content='telephone=no')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui')
     meta(name='apple-mobile-web-app-capable', content='yes')
     meta(name='apple-mobile-web-app-status-bar-style', content='black')
+    meta(http-equiv='Content-Security-Policy', content='' +
+      'default-src data: *; ' +
+      'script-src \'self\' \'unsafe-inline\' \'unsafe-eval\' *; ' +
+      'style-src  \'self\' \'unsafe-inline\' *')
+
     title Утро 2016
     link(rel='stylesheet', href='./js/vendor/framework7/css/framework7.ios.min.css')
     link(rel='stylesheet', href='./css/common.css')
@@ -41,7 +47,7 @@ html
                 .b-sub-header__item
                   a.b-sub-header__button.b-button.b-button_width_fluid.b-button_style_bordered.b-button_font-size_small(href='cabinet/index.html?tab=my') Мое расписание
                 .b-sub-header__item
-                  a.b-sub-header__button.b-button.b-button_width_fluid.b-button_style_bordered.b-button_font-size_small(href='#') Карта
+                  a.b-sub-header__button.b-button.b-button_width_fluid.b-button_style_bordered.b-button_font-size_small(href='map/index.html') Карта
 
         .pages.navbar-through
           .page.page-on-center.with-subnavbar(data-page='main')
@@ -78,7 +84,8 @@ html
             svg.b-welcome-screen__img
               use(xlink:href='#icon_welcome')
 
-
+    if dev === false
+      script(src='./cordova.js')
     script(src='./js/vendor/svg.js')
     script(src='./js/vendor/vendor.js')
     script(src='./js/app/init.js')

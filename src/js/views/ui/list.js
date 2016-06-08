@@ -52,7 +52,13 @@ class Simple extends Backbone.View {
 
   render() {
     this.$el.empty();
-    this.collection.each(this.addItem, this);
+
+    let method = 'forEach';
+    if (this.collection instanceof Backbone.Collection) {
+      method = 'each';
+    }
+
+    this.collection[method](this.addItem, this);
     return this;
   }
 }

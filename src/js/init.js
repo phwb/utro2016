@@ -1,3 +1,6 @@
+/* переменная webpack */
+/* global IS_DEV */
+
 'use strict';
 
 /**
@@ -28,7 +31,7 @@
  * ./views/main/menu.json - объект из которого строится меню
  */
 
-import {initRouter, initSync, formatDate} from './app/helpers';
+import {initRouter, initSync, formatDate, initPushwoosh, initStatusBar} from './app/helpers';
 
 // первичная настройки подключения к БД
 // --------------
@@ -43,9 +46,6 @@ lf.config({
 // функция форматирования даты
 _.template.formatDate = formatDate;
 
-// инициализация роутера
-initRouter();
-
 // установка начальных параметров Framework7
 // --------------
 // при чем инициализация в самом низу скрипта в функции initSync,
@@ -56,13 +56,16 @@ let app = new Framework7({
   init: false
 });
 
+// инициализация роутера
+initRouter(app);
+
 // создаем главную (и единственную) вьюшку приложения
 app.addView('.view-main', {
   dynamicNavbar: true
 });
 
-// начало синхронизации
-initSync(function () {
+// коллбек функция для initSync
+function initSyncCallback() {
   let $ = Backbone.$;
 
   // подписываемся на событие окончания загрузки
@@ -75,6 +78,13 @@ initSync(function () {
   // событие генерируется вьюшке views/main/modal
   $('.login-screen').on('close:modal', () => app.closeModal());
 
+  if (!IS_DEV) {
+    initPushwoosh();
+    initStatusBar();
+  }
+
   // где то по пути инициализируем само приложение
   app.init();
-});
+}
+// начало синхронизации
+document.addEventListener(IS_DEV ? 'DOMContentLoaded' : 'deviceready', initSync.bind(false, initSyncCallback), false);

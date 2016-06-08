@@ -36,24 +36,31 @@ class Page extends PullDown {
     super.initialize();
     this.href = params.href || href;
     this.$list = this.$el.find('.content-block-inner');
+    this.listenTo(this.collection, 'change:active', this.changeActive);
+  }
+
+  changeActive() {
+    this.addAll();
   }
 
   addAll() {
     let collection = this.collection;
     if (!collection.length) {
-      if (collection.status && collection.status !== 'pending') {
-        this.$empty.show();
-      }
       return this;
     }
 
+    let news = collection.where({active: true});
     let view = new List({
-      collection: collection,
+      collection: news,
       href: this.href
     });
 
     this.$empty.hide();
     this.$list.html( view.render().$el );
+
+    if (!news.length) {
+      this.$empty.show();
+    }
   }
 
   addItem(model) {

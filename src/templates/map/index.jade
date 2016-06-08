@@ -1,0 +1,18 @@
+.navbar
+  .navbar-inner
+    .left
+      a.back.link.b-back(href='#'): svg.b-back__icon: use(xlink:href='#icon_back')
+    .center.sliding Карта
+    .right
+      a.link.open-panel.b-nav-button(href='#')
+        .b-nav-button__body
+          .b-nav-button__item.b-nav-button__item_top
+          .b-nav-button__item.b-nav-button__item_center
+          .b-nav-button__item.b-nav-button__item_bottom
+.pages
+  .page.page-no-space(data-page='map')
+    .page-content.map-content
+      .empty-page(data-text='Загрузка карты...')
+
+    include ../ui/toolbar.pug
+

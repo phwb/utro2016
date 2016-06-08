@@ -1,3 +1,6 @@
+/* переменная webpack */
+/* global IS_DEV */
+
 'use strict';
 
 import dateFormat from 'date-format';
@@ -14,9 +17,11 @@ import polls      from '../collections/polls';
 import utro24     from '../collections/utro24';
 import about      from '../collections/about';
 import notify     from '../collections/notify';
+import registerPushwooshAndroid from './pushwoosh/android';
+import registerPushwooshIOS     from './pushwoosh/ios';
 
 // + logger
-let log = true;
+let log = IS_DEV;
 export function logger() {
   if (log) {
     console.log.apply(console, arguments);
@@ -34,12 +39,21 @@ logger.error = function () {
 };
 // - logger
 
+// + инициализация StatusBar
+export function initStatusBar(color = '#31b5e8') {
+  if (!window.hasOwnProperty('StatusBar')) {
+    return false;
+  }
+
+  StatusBar.backgroundColorByHexString(color);
+}
+// - инициализация StatusBar
+
 // + update notify
 /**
  * самая простая функция автообновления раз в 60 секунд
  */
 let $ = Backbone.$;
-
 function searchNewNotify() {
   let newer = notify.filter(model => model.get('isNew') === true);
   let $tip = $('.b-tip__body');
@@ -47,14 +61,20 @@ function searchNewNotify() {
   if (newer.length) {
     $tip.show().text(newer.length);
   } else {
-    $tip.hide().text('');
+    $tip.hide();
   }
 }
 
+// подписываемся на событие добавления/изменения модели уведомлений
+notify.on('add change', searchNewNotify);
+// начальные настройки таймера обновления
+let timer = null;
+let timeout = 60000;
 function updateNotify() {
-  searchNewNotify();
-  notify.on('add change', searchNewNotify);
-  setTimeout(() => notify.refresh().then(() => updateNotify()), 60000);
+  notify.refresh().then(() => {
+    searchNewNotify();
+    timer = setTimeout(updateNotify, timeout);
+  });
 }
 // - update notify
 
@@ -88,13 +108,20 @@ function load(name) {
 /**
  * Инициализация роутера
  */
-export function initRouter() {
+export function initRouter(app) {
   let $ = Framework7.$;
 
   $(document).on('pageBeforeInit', e => {
     let page = e.detail.page;
     load(page.name)
       .then(route => route(page.container, page.query || {}))
+      .then(() => {
+        if (page.name === 'map') {
+          app.params.swipePanel = false;
+        } else if (!app.params.swipePanel) {
+          app.params.swipePanel = 'left';
+        }
+      })
       .then(searchNewNotify)
       .catch(e => console.error(e));
   });
@@ -126,7 +153,6 @@ export function initSync(callback = () => {}) {
   let sync = Promise.resolve();
   return sync
     .then(fetchConfig)
-    .then(() => console.time('Время загрузки приложения'))
     .then(() => new Sync(shifts))
     .then(() => new Sync(days))
     .then(() => new Sync(notify))
@@ -139,9 +165,8 @@ export function initSync(callback = () => {}) {
     .then(() => new Sync(about))
     .then(() => new Sync(polls))
     .then(() => new Sync(schedule))
-    .then(updateNotify)
-    .catch(e => console.error(e))
-    .then(() => console.timeEnd('Время загрузки приложения'));
+    .catch(e => logger.error(e))
+    .then(updateNotify);
 }
 // - sync
 
@@ -160,3 +185,21 @@ export function formatDate(date) {
     .replace(/D/g, daysName[date.getDay()]);
 }
 // - форматирование даты
+
+// + инициализация pushwoosh
+function pushCallback() {
+  clearTimeout(timer);
+  updateNotify();
+}
+
+export function initPushwoosh() {
+  if (device.platform.toLowerCase() === 'android') {
+    registerPushwooshAndroid(pushCallback);
+  }
+
+  if (device.platform.toLowerCase() === 'iphone' || device.platform.toLowerCase() === 'ios') {
+    registerPushwooshIOS(pushCallback);
+  }
+}
+// - инициализация pushwoosh
+

@@ -1,9 +1,12 @@
+'use strict';
+
 /**
  * @param {string} type - может быть двух вариантов text или html
  */
 let NewsItem = Backbone.Model.extend({
   defaults: {
     id: 0,
+    active: true,
     name: 'Без имени',
     date: 0,
     timestamp: 0,

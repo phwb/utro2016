@@ -1,6 +1,7 @@
 let Expert = Backbone.Model.extend({
   defaults: {
     id: 0,
+    active: true,
     name: '',
     type: 'html',
     text: '',

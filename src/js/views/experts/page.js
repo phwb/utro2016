@@ -46,7 +46,10 @@ class Page extends PullDown {
   }
 
   addFederal() {
-    let experts = this.collection.where({placeID: 0});
+    let experts = this.collection.where({
+      placeID: 0,
+      active: true
+    });
     if (!experts.length) {
       logger('не нашли ни одного федерального эксперта');
       return this;
@@ -67,7 +70,7 @@ class Page extends PullDown {
 
   addPlaces() {
     let experts = this.collection.filter(model => {
-      return model.get('placeID') !== 0;
+      return model.get('placeID') !== 0 && model.get('active') === true;
     });
     if (!experts.length) {
       logger('не нашли ни одного эксперта площадки');

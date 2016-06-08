@@ -71,7 +71,8 @@ class Page extends PullDown {
 
     let schedule = this.collection.where({
       dayID: day,
-      placeID: place
+      placeID: place,
+      active: true
     });
     if (!schedule.length) {
       if (this.collection.status !== 'pending') {
@@ -81,6 +82,13 @@ class Page extends PullDown {
       logger.info('почему то пустое расписание');
       return this;
     }
+    // модифицируем поле sort, пишем в него время старта
+    schedule = schedule.map(model => {
+      let params = model.toJSON();
+      let start = params.start.replace(':', '');
+      params.sort = +start || 0;
+      return params;
+    });
 
     selectedCollection = new Schedule(schedule);
     let view = new List({

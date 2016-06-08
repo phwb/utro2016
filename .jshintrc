@@ -9,6 +9,7 @@
   "node": true,
 
   "devel": true,
+  "browser": true,
 
   "esnext": true,
   "immed": true,
@@ -25,9 +26,13 @@
   "white": true,
   "globals": {
     "document": true,
+    "window": true,
+    "StatusBar": true,
     "Framework7": true,
     "Dom7": true,
     "Backbone": true,
-    "_": true
+    "_": true,
+    "device": true,
+    "cordova": true
   }
 }

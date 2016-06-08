@@ -51,7 +51,10 @@ class ContactList extends PullDown {
     }
 
     let collection = this.collection;
-    let contacts = collection.where({placeID: place});
+    let contacts = collection.where({
+      placeID: place,
+      active: true
+    });
     if (!contacts.length) {
       if (collection.status && collection.status !== 'pending') {
         this.$empty.show();

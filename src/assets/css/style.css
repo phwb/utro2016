@@ -71,9 +71,6 @@
   direction: rtl;
   padding: 0 34px 0 0;
 }
-.b-nav-button {
-  color: #fff;
-}
-.b-tip__body {
-  display: none;
+.map-content .ymaps-map {
+  background: url("../img/map-bg.png");
 }

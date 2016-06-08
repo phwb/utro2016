@@ -1,6 +1,7 @@
 let Contact = Backbone.Model.extend({
   defaults: {
     id: 0,
+    active: true,
     name: '',
     timestamp: 0,
     phone: '',

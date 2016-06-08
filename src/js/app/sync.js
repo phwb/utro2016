@@ -1,10 +1,11 @@
+/* переменная webpack */
+/* global API_URL, IS_DEV */
+
 'use strict';
 
 let ajax = Backbone.ajax;
 let defaults = {
-  domain: 'http://utro2016.probitrix.com/local/api'
-  // domain: 'http://api.utro2016.loc'
-  // domain: 'http://192.168.1.46/local/api'
+  domain: API_URL
 };
 
 /**
@@ -31,10 +32,22 @@ function getModelParams(obj, map = {}) {
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       let mapKey = map.hasOwnProperty(key) ? map[key] : camelize(key);
-      let val = key === 'SORT' ? +obj[key] : obj[key];
-      // если пришло значение, то установми его
+      let val;
+      // типа привидение типов
+      switch (key) {
+        case 'SORT':
+          val = +obj[key];
+          break;
+        case 'ACTIVE':
+          val = obj[key] === 'Y';
+          break;
+        default:
+          val = obj[key];
+          break;
+      }
+      // если пришло значение с сервера, то установми его
       // иначе его по дефолту поставит Backbone
-      if (!!val) {
+      if (!!obj[key]) {
         result[mapKey] = val;
       }
     }
@@ -59,7 +72,9 @@ class Sync {
   }
 
   fetch() {
-    console.group(`sync:fetch ${this.collection.url}`);
+    if (IS_DEV) {
+      console.group(`sync:fetch ${this.collection.url}`);
+    }
     let promise =  new Promise((resolve, reject) => {
       this.collection.fetch({
         reset: true,
@@ -86,7 +101,9 @@ class Sync {
 
       // если коллекция пустая, значит это скорее всего первый запуск
       // и надо получить данный с сервера
-      console.time(`ajax`);
+      if (IS_DEV) {
+        console.time(`ajax`);
+      }
       collection.status = 'pending';
       collection.trigger('sync:ajax.start');
 
@@ -120,7 +137,9 @@ class Sync {
     let timestamp = data.LAST_DATE_UPDATE || false;
     let collection = this.collection;
 
-    console.timeEnd(`ajax`);
+    if (IS_DEV) {
+      console.timeEnd(`ajax`);
+    }
     if (!items.length) {
       reject(new Error(`Пустой массив ITEMS ${collection.url}`));
     }
@@ -131,7 +150,9 @@ class Sync {
     let syncMap = collection.model.prototype.syncMap || {};
     let len = items.length;
 
-    console.time(`parse`);
+    if (IS_DEV) {
+      console.time(`parse`);
+    }
     function save(item) {
       let param = getModelParams(item, syncMap);
       collection.create(param, {
@@ -152,7 +173,9 @@ class Sync {
               timestamp: timestamp,
               method: 'set'
             });
-            console.timeEnd(`parse`);
+            if (IS_DEV) {
+              console.timeEnd(`parse`);
+            }
             return true;
           } else {
             save(items[len]);
@@ -268,8 +291,10 @@ class Sync {
     this.collection.trigger('sync:error', e);
     this.collection.status = false;
 
-    console.error('reject', arguments);
-    console.groupEnd();
+    if (IS_DEV) {
+      console.error('reject', arguments);
+      console.groupEnd();
+    }
   }
 
   done() {
@@ -314,7 +339,7 @@ export function getPollFields(model) {
       .done(data => {
         let questions = data.QUESTIONS || [];
         if (!questions.length) {
-          reject(new Error('Нет вопросов'));
+          resolve();
         }
 
         let answerMap = {
@@ -343,7 +368,39 @@ export function getPollFields(model) {
         resolve(params);
       })
       .fail(() => {
-        reject(new Error('ajax fail'));
+        reject(new Error('Ошибка интернет соединения!'));
+      });
+  });
+}
+
+// отправка ответов голосования на сервер
+export function setPollFields(model, params) {
+  return new Promise((resolve, reject) => {
+    if (!model.collection) {
+      reject(new Error('Нет коллекции опросов'));
+    }
+
+    let url = model.collection.url;
+    if (!url) {
+      reject(new Error('Пустой URL опросов'));
+    }
+
+    let id = model.get('id');
+    let ajaxParams = {
+      url: defaults.domain + url + '/' + id + '?' + params,
+      method: 'POST'
+    };
+
+    ajax(ajaxParams)
+      .done(data => {
+        if (data.SUCCESS && data.SUCCESS === 'Y') {
+          resolve();
+          return this;
+        }
+        reject(new Error('Голосование не доступно, повторите попытку позже!'));
+      })
+      .fail(() => {
+        reject(new Error('Ошибка интернет соединения!'));
       });
   });
 }

@@ -1,9 +1,5 @@
-dist
-build
-.idea
-app/plugins
-app/platforms
-app/hooks
+build/
+.idea/
 
 # Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template
@@ -110,3 +106,4 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
+app/

@@ -341,6 +341,7 @@ input:-ms-input-placeholder {
 /* b-nav-button */
 /* --------------------------------------------- */
 .b-nav-button {
+  color: #fff;
   display: inline-block;
   position: relative;
   padding-right: 14px;
@@ -512,6 +513,7 @@ input:-ms-input-placeholder {
   position: absolute;
 }
 .b-tip__body {
+  display: none;
   z-index: 2;
   position: absolute;
   top: -7px;
@@ -1375,10 +1377,11 @@ input:-ms-input-placeholder {
   margin-bottom: 30px;
 }
 .b-event__header {
-  display: -webkit-box;
+  /*display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex;
+  display: flex;*/
+  overflow: hidden;
   border-bottom: 1px solid #d6d6d6;
 }
 @media screen and (max-width: 319px) {
@@ -1388,6 +1391,7 @@ input:-ms-input-placeholder {
 }
 .b-event__properties {
   width: 130px;
+  float: left;
 }
 @media screen and (max-width: 319px) {
   .b-event__properties {
@@ -1426,6 +1430,10 @@ input:-ms-input-placeholder {
   font-weight: bold;
   font-size: 20px;
   font-size: 2rem;
+  margin-left: 130px;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  word-break: break-all;
 }
 .b-event__body {
   padding: 14px;

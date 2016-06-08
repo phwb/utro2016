@@ -2,7 +2,10 @@
 
 import {logger}         from '../../app/helpers';
 import polls            from '../../collections/polls';
-import {getPollFields}  from '../../app/sync';
+import {
+  getPollFields,
+  setPollFields
+}  from '../../app/sync';
 import Form             from './poll-form';
 import Result           from './poll-result';
 
@@ -58,7 +61,9 @@ class Page extends Backbone.View {
 
   _renderResult(questions) {
     if (!questions) {
-      throw new Error('poll-result: ajax вернул пустой ответ');
+      logger.error('poll-form: ajax вернул пустой ответ');
+      this.$empty.show();
+      return this;
     }
 
     let result = new Result({
@@ -70,7 +75,9 @@ class Page extends Backbone.View {
 
   _renderForm(questions) {
     if (!questions) {
-      throw new Error('poll-form: ajax вернул пустой ответ');
+      logger.error('poll-form: ajax вернул пустой ответ');
+      this.$empty.show();
+      return this;
     }
 
     let form = new Form({
@@ -83,10 +90,25 @@ class Page extends Backbone.View {
 
   submitFrom(params) {
     if (!params) {
+      alert('Выберите хотя бы одни вариант ответа!');
       return this;
     }
-    // TODO ajax request here
-    this.model.set({voted: true}).save();
+    let emptyText = this.$empty.attr('data-text');
+
+    this.$content.empty();
+    this.$empty
+      .attr('data-text', 'Загрузка результатов голосования...')
+      .show();
+
+    setPollFields(this.model, params)
+      .then(() => {
+        this.model.set({voted: true}).save();
+        this.$empty.hide();
+      })
+      .catch(e => {
+        alert(e.message);
+      })
+      .then(() => this.$empty.attr('data-text', emptyText));
   }
 }
 
