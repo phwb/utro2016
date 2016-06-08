@@ -60,13 +60,18 @@ let app = new Framework7({
 initRouter(app);
 
 // создаем главную (и единственную) вьюшку приложения
-app.addView('.view-main', {
+let mainView = app.addView('.view-main', {
   dynamicNavbar: true
 });
 
 // коллбек функция для initSync
 function initSyncCallback() {
   let $ = Backbone.$;
+
+  document.addEventListener('backbutton', e => {
+    e.preventDefault();
+    mainView.router.back();
+  });
 
   // подписываемся на событие окончания загрузки
   // сделано для того чтобы не пробрасывать app во вьюшки

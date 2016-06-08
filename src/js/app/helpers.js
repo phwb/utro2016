@@ -165,7 +165,10 @@ export function initSync(callback = () => {}) {
     .then(() => new Sync(about))
     .then(() => new Sync(polls))
     .then(() => new Sync(schedule))
-    .catch(e => logger.error(e))
+    .catch(e => {
+      alert('Ошибка интернет соединения!');
+      logger.error(e);
+    })
     .then(updateNotify);
 }
 // - sync
