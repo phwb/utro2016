@@ -128,6 +128,25 @@ export function initRouter(app) {
 }
 // - router
 
+// + alert
+export function myAlert(arg) {
+  let params = {
+    message: '',
+    callback: function () {},
+    title: 'Внимание!',
+    button: 'ОК'
+  };
+  if (typeof arg === 'string') {
+    params.message = arg;
+  }
+  if (navigator.notification) {
+    navigator.notification.alert(params.message, params.callback, params.title, params.button);
+  } else {
+    alert(params.message);
+  }
+}
+// - alert
+
 // + sync
 /**
  * Первым всегда загружается конфиг
@@ -166,7 +185,7 @@ export function initSync(callback = () => {}) {
     .then(() => new Sync(polls))
     .then(() => new Sync(schedule))
     .catch(e => {
-      alert('Ошибка интернет соединения!');
+      myAlert('Ошибка интернет соединения!');
       logger.error(e);
     })
     .then(updateNotify);

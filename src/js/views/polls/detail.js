@@ -1,6 +1,9 @@
 'use strict';
 
-import {logger}         from '../../app/helpers';
+import {
+  logger,
+  myAlert
+} from '../../app/helpers';
 import polls            from '../../collections/polls';
 import {
   getPollFields,
@@ -90,7 +93,7 @@ class Page extends Backbone.View {
 
   submitFrom(params) {
     if (!params) {
-      alert('Выберите хотя бы одни вариант ответа!');
+      myAlert('Выберите хотя бы одни вариант ответа!');
       return this;
     }
     let emptyText = this.$empty.attr('data-text');
@@ -105,9 +108,7 @@ class Page extends Backbone.View {
         this.model.set({voted: true}).save();
         this.$empty.hide();
       })
-      .catch(e => {
-        alert(e.message);
-      })
+      .catch(e => myAlert(e.message))
       .then(() => this.$empty.attr('data-text', emptyText));
   }
 }

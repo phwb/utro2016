@@ -1,5 +1,6 @@
 'use strict';
 
+import {myAlert} from '../app/helpers';
 import Page from '../views/map/page';
 
 function loadScript() {
@@ -58,7 +59,7 @@ module.exports = function (container) {
 
   loadScript()
     .then(ymaps => page.renderMap(ymaps))
-    .catch(() => alert('Ошибка интернет соединения!'));
+    .catch(() => myAlert('Ошибка интернет соединения!'));
 
   return page;
 };

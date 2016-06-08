@@ -1,5 +1,6 @@
 'use strict';
 
+import {myAlert} from '../../app/helpers';
 import {YMaps, TilerConverter} from '../../app/ymaps-utils';
 import legend from './legend.json';
 
@@ -42,7 +43,7 @@ class Page extends Backbone.View {
   }
 
   onError() {
-    alert('Ошибка геопозиционирования, попробуйте перезагрузить устройство!');
+    myAlert('Ошибка геопозиционирования, попробуйте перезагрузить устройство!');
   }
 
   renderMap(ymaps) {
