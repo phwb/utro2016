@@ -26,7 +26,7 @@ class Page extends Backbone.View {
     let coords = [position.coords.latitude, position.coords.longitude];
 
     this.placemark = new this.ymaps.Placemark(coords, {}, {
-      preset: 'islands#blueCircleDotIcon'
+      preset: 'twirl#redDotIcon'
     });
     this.map.geoObjects.add(this.placemark);
     this.map.setCenter(coords);
