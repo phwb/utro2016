@@ -74,3 +74,6 @@
 .map-content .ymaps-map {
   background: url("../img/map-bg.png");
 }
+.statusbar-overlay {
+  background: #31b5e8;
+}
