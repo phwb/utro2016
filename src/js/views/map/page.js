@@ -32,6 +32,9 @@ class Page extends Backbone.View {
     this.map.geoObjects.add(this.placemark);
     this.map.setCenter(coords);
 
+    if (watchID) {
+      geolocation.clearWatch(watchID);
+    }
     watchID = geolocation.watchPosition(this.watch.bind(this), this.onError, this.geoParams);
   }
 

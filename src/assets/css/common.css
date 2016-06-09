@@ -2271,11 +2271,6 @@ input:-ms-input-placeholder {
   transition-property: background-color;
 }
 
-.view-main[data-page="cabinet"] .navbar,
-.view-main[data-page="cabinet"] .subnavbar {
-  background: #f8ae19;
-}
-
 .content-block {
   margin-top: 0;
   margin-bottom: 0;
