@@ -5,6 +5,7 @@ import {YMaps, TilerConverter} from '../../app/ymaps-utils';
 import legend from './legend.json';
 
 let geolocation = navigator.geolocation;
+let watchID;
 
 class Page extends Backbone.View {
   initialize() {
@@ -31,7 +32,7 @@ class Page extends Backbone.View {
     this.map.geoObjects.add(this.placemark);
     this.map.setCenter(coords);
 
-    geolocation.watchPosition(this.watch.bind(this), this.onError, this.geoParams);
+    watchID = geolocation.watchPosition(this.watch.bind(this), this.onError, this.geoParams);
   }
 
   watch(position) {
@@ -44,6 +45,9 @@ class Page extends Backbone.View {
 
   onError() {
     myAlert('Ошибка геопозиционирования, попробуйте перезагрузить устройство!');
+    if (watchID) {
+      geolocation.clearWatch(watchID);
+    }
   }
 
   renderMap(ymaps) {
