@@ -14,6 +14,10 @@ widget(xmlns='http://www.w3.org/ns/widgets', id='ru.ugraweb.utro2016', version='
   plugin(name='cordova-plugin-dialogs', spec='1.2.1')/
   plugin(name='pushwoosh-cordova-plugin', spec='https://github.com/phwb/pushwoosh-phonegap-plugin.git', source='git')/
 
+  // status bar
+  preference(name='StatusBarOverlaysWebView', value='true')/
+  preference(name='StatusBarStyle', value='lightcontent')/
+
   // настройки pushwoosh для build.phonegap.com
   preference(name='android-build-tool', value='gradle')/
 
@@ -80,15 +84,14 @@ widget(xmlns='http://www.w3.org/ns/widgets', id='ru.ugraweb.utro2016', version='
     // iPad Spotlight and Settings Icon
     icon(src='res/icon/ios/icon-50.png', width='50', height='50')/
     icon(src='res/icon/ios/icon-50@2x.png', width='100', height='100')/
-
-    //
-      splash(src='res/screen/ios/Default~iphone.png', width='320', height='480')/
-      splash(src='res/screen/ios/Default@2x~iphone.png', width='640', height='960')/
-      splash(src='res/screen/ios/Default-Portrait~ipad.png', width='768', height='1024')/
-      splash(src='res/screen/ios/Default-Portrait@2x~ipad.png', width='1536', height='2048')/
-      splash(src='res/screen/ios/Default-568h@2x~iphone.png', width='640', height='1136')/
-      splash(src='res/screen/ios/Default-667h.png', width='750', height='1334')/
-      splash(src='res/screen/ios/Default-736h.png', width='1242', height='2208')/
+    // splash screen
+    splash(src='res/screen/ios/Default~iphone.png', width='320', height='480')/
+    splash(src='res/screen/ios/Default@2x~iphone.png', width='640', height='960')/
+    splash(src='res/screen/ios/Default-Portrait~ipad.png', width='768', height='1024')/
+    splash(src='res/screen/ios/Default-Portrait@2x~ipad.png', width='1536', height='2048')/
+    splash(src='res/screen/ios/Default-568h@2x~iphone.png', width='640', height='1136')/
+    splash(src='res/screen/ios/Default-667h.png', width='750', height='1334')/
+    splash(src='res/screen/ios/Default-736h.png', width='1242', height='2208')/
 
   access(origin='*')/
   access(origin='*.pushwoosh.com')/
