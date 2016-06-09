@@ -184,10 +184,7 @@ export function initSync(callback = () => {}) {
     .then(() => new Sync(about))
     .then(() => new Sync(polls))
     .then(() => new Sync(schedule))
-    .catch(e => {
-      myAlert('Ошибка интернет соединения!');
-      logger.error(e);
-    })
+    .catch(e => myAlert(`Ошибка: ${e.message}`))
     .then(updateNotify);
 }
 // - sync
@@ -215,6 +212,10 @@ function pushCallback() {
 }
 
 export function initPushwoosh() {
+  if (!window.device) {
+    return false;
+  }
+
   if (device.platform.toLowerCase() === 'android') {
     registerPushwooshAndroid(pushCallback);
   }

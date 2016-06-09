@@ -169,7 +169,7 @@ export function serve() {
 }
 
 export function config() {
-  return gulp.src('./src/app/config.pug')
+  return gulp.src(`./src/app/config.pug`)
     .pipe(plumber(plumberOptions))
     .pipe(pug({
       pretty: true
@@ -177,16 +177,16 @@ export function config() {
     .pipe(rename({
       extname: '.xml'
     }))
-    .pipe(gulp.dest('./app'));
+    .pipe(gulp.dest(`./${path}`));
 }
 
 export function appAssets() {
-  return gulp.src('./src/app/res/**').pipe(gulp.dest('./app/res'));
+  return gulp.src('./src/app/res/**').pipe(gulp.dest(`./${path}/res`));
 }
 
-export const app = gulp.series(
+export const phonegap = gulp.series(
   cb => {
-    path = 'app/www';
+    path = 'phonegap';
     cb();
   },
   clean,

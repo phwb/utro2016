@@ -1,18 +1,34 @@
 doctype xml
-widget(id='ru.ugraweb.utro2016', version='1.0.0', xmlns='http://www.w3.org/ns/widgets', xmlns:cdv='http://cordova.apache.org/ns/1.0')
+widget(xmlns='http://www.w3.org/ns/widgets', id='ru.ugraweb.utro2016', version='1.0.0')
   name Утро 2016
   description Шестой форум молодежи Уральского федерального округа «УТРО-2016»
   author(email='ugraweb@gmail.com', href='http://ugraweb.ru') Ugraweb Team
 
   content(src='index.html')/
 
-  plugin(name='cordova-plugin-whitelist', spec='^1.2.2')/
-  plugin(name='cordova-plugin-device', spec='^1.1.2')/
-  plugin(name='cordova-plugin-statusbar', spec='^2.1.3')/
-  plugin(name='cordova-plugin-splashscreen', spec='^3.2.2')/
-  plugin(name='cordova-plugin-geolocation', spec='^2.2.0')/
-  plugin(name='cordova-plugin-dialogs', spec='^1.2.1')/
-  plugin(name='pushwoosh-cordova-plugin', spec='^5.0.3')/
+  plugin(name='cordova-plugin-whitelist', spec='1.2.2')/
+  plugin(name='cordova-plugin-device', spec='1.1.2')/
+  plugin(name='cordova-plugin-statusbar', spec='2.1.3')/
+  plugin(name='cordova-plugin-splashscreen', spec='3.2.2')/
+  plugin(name='cordova-plugin-geolocation', spec='2.2.0')/
+  plugin(name='cordova-plugin-dialogs', spec='1.2.1')/
+  plugin(name='pushwoosh-cordova-plugin', spec='https://github.com/phwb/pushwoosh-phonegap-plugin.git', source='git')/
+
+  // настройки pushwoosh для build.phonegap.com
+  preference(name='android-build-tool', value='gradle')/
+
+  // общие настройки приложения для build.phonegap.com
+  preference(name='permissions', value='none')/
+  preference(name='orientation', value='portrait')/
+  preference(name='android-minSdkVersion', value='19')/
+  preference(name='android-installLocation', value='auto')/
+  preference(name='target-device', value='universal')/
+  preference(name='prerendered-icon', value='true')/
+  preference(name='detect-data-types', value='true')/
+  preference(name='exit-on-suspend', value='true')/
+  preference(name='webviewbounce', value='false')/
+  preference(name='stay-in-webview', value='false')/
+  preference(name='DisallowOverscroll', value='true')/
 
   // настройки SplashScreen'а, вырубаем его по умолчанию
   preference(name='SplashScreenDelay', value='0')/

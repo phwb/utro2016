@@ -83,10 +83,8 @@ function initSyncCallback() {
   // событие генерируется вьюшке views/main/modal
   $('.login-screen').on('close:modal', () => app.closeModal());
 
-  if (!IS_DEV) {
-    initPushwoosh();
-    initStatusBar();
-  }
+  initPushwoosh();
+  initStatusBar();
 
   // где то по пути инициализируем само приложение
   app.init();
