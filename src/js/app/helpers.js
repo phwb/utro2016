@@ -55,7 +55,10 @@ export function initStatusBar(color = '#31b5e8') {
  */
 let $ = Backbone.$;
 function searchNewNotify() {
-  let newer = notify.filter(model => model.get('isNew') === true);
+  let newer = notify.filter(model => {
+    let params = model.toJSON();
+    return params.isNew === true && params.active;
+  });
   let $tip = $('.b-tip__body');
 
   if (newer.length) {
@@ -69,7 +72,7 @@ function searchNewNotify() {
 notify.on('add change', searchNewNotify);
 // начальные настройки таймера обновления
 let timer = null;
-let timeout = 60000;
+let timeout = 60000 * 5;
 function updateNotify() {
   notify.refresh().then(() => {
     searchNewNotify();

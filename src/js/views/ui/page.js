@@ -1,6 +1,6 @@
 'use strict';
 
-import {logger} from '../../app/helpers';
+import {logger, myAlert} from '../../app/helpers';
 
 /**
  * Класс для страницы с возможностью pull down
@@ -86,7 +86,7 @@ class PullDown extends Backbone.View {
   }
 
   loadError() {
-    // TODO: как-то отреагировать на ошибку загрузки
+    myAlert('Ошибка интернет соединения!');
   }
 
   /**

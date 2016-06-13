@@ -38,7 +38,12 @@ class Page extends PullDown {
 
   addAll() {
     let collection = this.collection;
-    if (!collection.length) {
+    let polls = collection.where({
+      active: true
+    });
+
+    this.$list.empty();
+    if (!polls.length) {
       if (collection.status !== 'pending') {
         this.$empty.show();
       }
@@ -48,7 +53,7 @@ class Page extends PullDown {
     }
 
     let view = new List({
-      collection: collection,
+      collection: polls,
       href: function (model) {
         return `polls/detail.html?id=${model.get('id')}`;
       }

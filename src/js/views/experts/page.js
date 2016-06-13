@@ -25,6 +25,11 @@ class List extends SimpleLink {
   }
 }
 
+let emptyIcon = {
+  federal: false,
+  places: false
+};
+
 let selectedFederal;
 let selectedPlaces;
 class Page extends PullDown {
@@ -40,9 +45,13 @@ class Page extends PullDown {
   }
 
   addAll() {
+    emptyIcon.federal = false;
+    emptyIcon.places = false;
+
     this
       .addFederal()
-      .addPlaces();
+      .addPlaces()
+      .toggleEmptyIcon();
   }
 
   addFederal() {
@@ -50,7 +59,10 @@ class Page extends PullDown {
       placeID: 0,
       active: true
     });
+
+    this.$federal.empty();
     if (!experts.length) {
+      emptyIcon.federal = true;
       logger('не нашли ни одного федерального эксперта');
       return this;
     }
@@ -72,7 +84,10 @@ class Page extends PullDown {
     let experts = this.collection.filter(model => {
       return model.get('placeID') !== 0 && model.get('active') === true;
     });
+
+    this.$places.empty();
     if (!experts.length) {
+      emptyIcon.places = true;
       logger('не нашли ни одного эксперта площадки');
       return this;
     }
@@ -93,6 +108,11 @@ class Page extends PullDown {
 
     this.$places.html( view.render().$el );
     return this;
+  }
+
+  toggleEmptyIcon() {
+    let show = emptyIcon.federal && emptyIcon.places;
+    this.$empty[ show ? 'show' : 'hide' ]();
   }
 
   addItem(model) {

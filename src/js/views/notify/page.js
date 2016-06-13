@@ -65,7 +65,12 @@ class Page extends PullDown {
 
   addAll() {
     let collection = this.collection;
-    if (!collection.length) {
+    let notify = collection.where({
+      active: true
+    });
+
+    this.$content.empty();
+    if (!notify.length) {
       if (collection.status && collection.status !== 'pending') {
         this.$empty.show();
       }
