@@ -6,7 +6,7 @@ let News = Backbone.Collection.extend({
   url: '/news',
   model: NewsItem,
   comparator: function (model) {
-    return model.get('sort');
+    return -model.get('date');
   },
   sync: Backbone.localforage.sync('news')
 });

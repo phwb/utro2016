@@ -79,7 +79,7 @@ class Page extends PullDown {
 
     let list = new List({
       el: this.$list,
-      collection: this.collection
+      collection: notify
     });
 
     this.$empty.hide();

@@ -19,7 +19,7 @@ let NewsItem = Backbone.Model.extend({
   syncMap: {
     NAME: 'name',
     ID: 'id',
-    DATE_CREATE: 'date',
+    ACTIVE_FROM: 'date',
     TIMESTAMP_X: 'timestamp',
     DETAIL_TEXT: 'text',
     DETAIL_TEXT_TYPE: 'type',

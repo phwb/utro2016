@@ -99,6 +99,12 @@ class Page extends Backbone.View {
             iconContent: item.name,
             balloonContent: item.text
           }
+        }, {
+          // Метку можно перемещать.
+          draggable: true
+        });
+        object.events.add('dragend', function (e) {
+          console.log(e.originalEvent.target.geometry.getCoordinates());
         });
         objects.add(object);
       });

@@ -1,0 +1,28 @@
+.navbar
+  .navbar-inner
+    .left
+      a.back.link.b-back(href='#'): svg.b-back__icon: use(xlink:href='#icon_back')
+    .center.sliding О разработчиках
+    .right
+      a.link.open-panel.b-nav-button(href='#')
+        .b-nav-button__body
+          .b-nav-button__item.b-nav-button__item_top
+          .b-nav-button__item.b-nav-button__item_center
+          .b-nav-button__item.b-nav-button__item_bottom
+.pages
+  .page.page-no-space(data-page='developers')
+    .page-content
+      .developers
+        .developers-icon
+          a(href='http://ugraweb.ru', class='external', target='_system')
+            svg.developers__icon: use(xlink:href='#icon_ugraweb')
+        .developers-text
+          | Разработка сайтов
+          br
+          | и мобильных приложений,
+          br
+          | комплексное сопровождение
+        .developers-link
+          a.developers__link(href='http://ugraweb.ru', class='external', target='_system')
+            span.developers__http http://
+            | ugraweb.ru

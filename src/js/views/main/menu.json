@@ -1,34 +1,52 @@
 [
   {
     "name": "Главная",
-    "link": "index.html"
+    "link": "index.html",
+    "external": false
   },
   {
     "name": "Личный кабинет",
-    "link": "cabinet/index.html"
+    "link": "cabinet/index.html",
+    "external": false
   },
   {
     "name": "О форуме",
-    "link": "about/index.html"
+    "link": "about/index.html",
+    "external": false
   },
   {
     "name": "Площадки",
-    "link": "places/index.html"
+    "link": "places/index.html",
+    "external": false
   },
   {
     "name": "Новости",
-    "link": "news/index.html"
+    "link": "news/index.html",
+    "external": false
   },
   {
     "name": "Эксперты",
-    "link": "experts/index.html"
+    "link": "experts/index.html",
+    "external": false
   },
   {
     "name": "Программы",
-    "link": "programs/index.html"
+    "link": "programs/index.html",
+    "external": false
   },
   {
     "name": "Утро 24",
-    "link": "utro24/index.html"
+    "link": "utro24/index.html",
+    "external": false
+  },
+  {
+    "name": "#ФорумУтро2016",
+    "link": "https://www.instagram.com/explore/tags/форумутро2016",
+    "external": true
+  },
+  {
+    "name": "О разработчиках",
+    "link": "developers/index.html",
+    "external": false
   }
 ]
