@@ -2388,5 +2388,5 @@ input:-ms-input-placeholder {
           align-content: stretch;
 }
 .panel-left {
-  padding: 45px 0 10px;
+  padding: 45px 0 10px !important;
 }
