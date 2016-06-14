@@ -86,6 +86,7 @@ class SimpleLink extends Simple {
         let params = this.model.toJSON();
         params.href = self.href(this.model);
         this.$el.html( this.template( params ) );
+        this.afterRender();
         return this;
       }
     };

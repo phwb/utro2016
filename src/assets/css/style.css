@@ -77,3 +77,32 @@
 .statusbar-overlay {
   background: #31b5e8;
 }
+.view-main[data-page="developers"] .navbar,
+.page[data-page="developers"] {
+  background: #212121;
+  color: #fff;
+}
+.developers-icon {
+  width: 56.25%;
+  margin: 0 auto;
+}
+.developers {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+.developers__icon {
+  max-width: 100%;
+}
+.developers__http {
+  color: #059146;
+}
+.developers__link {
+  color: #fff;
+  text-decoration: none;
+}
+.developers-text {
+  margin-top: -55px;
+}

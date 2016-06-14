@@ -1,5 +1,6 @@
 'use strict';
 
+import _item from './templates/menu-item.jade';
 import items from './menu.json';
 import {SimpleLink} from '../ui/list';
 
@@ -9,7 +10,8 @@ class MenuItem extends Backbone.Model {
   get defaults() {
     return {
       name: '',
-      link: ''
+      link: '',
+      external: false
     };
   }
 }
@@ -20,7 +22,6 @@ class Menu extends Backbone.Collection {
   }
 }
 
-let _item ='<a href="<%= href %>" class="item-link close-panel b-main-nav__act"><%= name %></a>';
 class MenuLink extends SimpleLink {
   get className() {
     return 'b-main-nav__lst';
@@ -57,7 +58,7 @@ class Panel extends Backbone.View {
       }
     });
 
-    this.$content.html( view.render().$el );
+    this.$el.html( view.render().$el );
     return this;
   }
 }
