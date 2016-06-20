@@ -86,7 +86,9 @@ class Page extends PullDown {
     schedule = schedule.map(model => {
       let params = model.toJSON();
       let start = params.start.replace(':', '');
-      params.sort = +start || 0;
+      let sort = +start || 0;
+      // микро хак, так как 00:00 = 24:00
+      params.sort = sort > 0 ? sort : 2400;
       return params;
     });
 
