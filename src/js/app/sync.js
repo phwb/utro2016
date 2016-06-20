@@ -252,9 +252,12 @@ class Sync {
 
       let collection = this.collection;
       let syncMap = collection.model.prototype.syncMap || {};
+      let defaults = collection.model.prototype.defaults || {};
 
       // подготавливаем параметры для вставки в коллекцию
-      let params = items.map(item => getModelParams(item, syncMap));
+      let params = items
+        .map(item => getModelParams(item, syncMap))
+        .map(item => _.defaults(item, defaults));
 
       // метод set достаточно умный, чтоб обновить или создать модель в коллекции
       // возвращает созданные/обновленные модели
